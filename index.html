@@ -24,10 +24,10 @@
       <rect width="1200" height="800" fill="#F8FBFC"/>
       <g transform="translate(600 400)">
         <ellipse cx="0" cy="160" rx="180" ry="24" fill="#E8F4F8"/>
-        <path d="M -140 -180 L -140 140 Q -140 180 -100 180 L 100 180 Q 140 180 140 140 L 140 -180 Z" fill="#fff" stroke="#4A9FBE" stroke-width="6"/>
-        <path d="M 140 -120 Q 220 -120 220 -40 Q 220 40 140 40" fill="none" stroke="#4A9FBE" stroke-width="6"/>
-        <text x="0" y="20" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="56" fill="#4A9FBE">feito</text>
-        <text x="0" y="80" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="56" fill="#4A9FBE">em casa</text>
+        <path d="M -140 -180 L -140 140 Q -140 180 -100 180 L 100 180 Q 140 180 140 140 L 140 -180 Z" fill="#fff" stroke="#1E5F7E" stroke-width="6"/>
+        <path d="M 140 -120 Q 220 -120 220 -40 Q 220 40 140 40" fill="none" stroke="#1E5F7E" stroke-width="6"/>
+        <text x="0" y="20" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="56" fill="#1E5F7E">feito</text>
+        <text x="0" y="80" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="56" fill="#1E5F7E">em casa</text>
       </g>
     </svg>
   </template>
@@ -62,14 +62,14 @@
     <sc-for list="{{ panels }}" as="p" hint-placeholder-count="4">
       <section data-panel-index="{{ p.index }}" class="fc-panel fc-panel-{{ p.side }} fc-pad" style="position: relative; height: 100vh; min-height: 620px; display: flex; align-items: center; padding: 100px 64px;">
         <div class="fc-panel-inner fc-panel-text" style="max-width: 460px; {{ p.alignStyle }}">
-          <div style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border: 1px solid #B8E5F0; border-radius: 999px; background: rgba(255,255,255,0.7); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #4A9FBE; margin-bottom: 22px;">
-            <span style="width: 6px; height: 6px; background: #4A9FBE; border-radius: 50%;"></span>
+          <div style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border: 1px solid #B8E5F0; border-radius: 999px; background: rgba(255,255,255,0.7); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #1E5F7E; margin-bottom: 22px;">
+            <span style="width: 6px; height: 6px; background: #1E5F7E; border-radius: 50%;"></span>
             {{ p.eyebrow }}
           </div>
           <h1 class="fc-hero-title" dangerouslySetInnerHTML="{{ p.titleHTML }}" style="font-family: 'Fraunces', serif; font-weight: 300; font-size: 64px; line-height: 1.04; letter-spacing: -0.025em; margin: 0 0 22px; color: #1a2733;"></h1>
           <p style="font-size: 16px; line-height: 1.65; color: #5a6b78; max-width: 420px; margin: 0 0 32px; font-weight: 300;">{{ p.desc }}</p>
           <sc-if value="{{ p.showCTA }}" hint-placeholder-val="{{ false }}">
-            <a href="https://wa.me/5511999999999?text=Olá!%20Gostaria%20de%20encomendar%20uma%20caneca%20personalizada." target="_blank" rel="noopener" class="fc-cta" style="display: inline-flex; align-items: center; gap: 12px; padding: 16px 40px; background: #4A9FBE; color: #fff; text-decoration: none; font-size: 14px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 999px; transition: all .3s ease; box-shadow: 0 12px 30px -10px rgba(74, 159, 190, 0.6);">
+            <a href="https://wa.me/5511999999999?text=Olá!%20Gostaria%20de%20encomendar%20uma%20caneca%20personalizada." target="_blank" rel="noopener" class="fc-cta" style="display: inline-flex; align-items: center; gap: 12px; padding: 16px 40px; background: #1E5F7E; color: #fff; text-decoration: none; font-size: 14px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 999px; transition: all .3s ease; box-shadow: 0 12px 30px -10px rgba(30, 95, 126, 0.6);">
               Começar
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
             </a>
@@ -93,24 +93,24 @@
   <section id="produtos" class="fc-pad" style="position: relative; z-index: 3; min-height: 100vh; padding: 130px 24px 90px; background: linear-gradient(180deg, #FFFFFF 0%, #F4FAFC 50%, #FFFFFF 100%); overflow: hidden; display: flex; flex-direction: column;">
 
     <div class="fc-reveal" style="text-align: center; max-width: 720px; margin: 0 auto 30px;">
-      <div style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #4A9FBE; margin-bottom: 16px;">— O que fazemos</div>
+      <div style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #1E5F7E; margin-bottom: 16px;">— O que fazemos</div>
       <h2 class="fc-section-title" style="font-family: 'Fraunces', serif; font-weight: 300; font-size: 52px; letter-spacing: -0.02em; line-height: 1.08; margin: 0 0 18px;">
         A caneca é só o começo.
       </h2>
       <p style="font-size: 16px; line-height: 1.6; color: #5a6b78; max-width: 540px; margin: 0 auto; font-weight: 300;">
-        Camisetas, sacolas, almofadas, bonés — qualquer ideia ganha forma no nosso ateliê. Arraste, gire, escolha o seu.
+        Canecas, camisetas e garrafas esportivas — sua arte ganha forma no nosso ateliê. Arraste, gire, escolha o seu.
       </p>
     </div>
 
     <!-- 3D Coverflow stage -->
     <div class="fc-carousel" style="position: relative; flex: 1; min-height: 440px; perspective: 1600px; perspective-origin: 50% 45%; user-select: none;" onMouseDown="{{ onCarouselDragStart }}" onTouchStart="{{ onCarouselDragStart }}">
       <div class="fc-carousel-track" style="position: absolute; inset: 0; transform-style: preserve-3d;">
-        <sc-for list="{{ carouselItems }}" as="c" hint-placeholder-count="6">
+        <sc-for list="{{ carouselItems }}" as="c" hint-placeholder-count="3">
           <div class="fc-card3d" onClick="{{ c.onClick }}" style="position: absolute; top: 50%; left: 50%; width: 280px; height: 360px; margin-left: -140px; margin-top: -180px; transform-style: preserve-3d; transform: {{ c.transform }}; opacity: {{ c.opacity }}; z-index: {{ c.z }}; transition: transform .8s cubic-bezier(.22,.9,.25,1), opacity .6s ease; cursor: pointer; pointer-events: {{ c.pointerEvents }};">
-            <div style="position: absolute; inset: 0; background: #FFFFFF; border-radius: 20px; box-shadow: 0 30px 60px -20px rgba(74, 159, 190, 0.35), 0 8px 20px -10px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid #E8F4F8;">
+            <div style="position: absolute; inset: 0; background: #FFFFFF; border-radius: 20px; box-shadow: 0 30px 60px -20px rgba(30, 95, 126, 0.35), 0 8px 20px -10px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid #E8F4F8;">
               <div style="position: relative; height: 240px; overflow: hidden; background: linear-gradient(135deg, #F4FAFC, #E8F4F8);">
                 <sc-if value="{{ c.image }}" hint-placeholder-val="{{ false }}"><img src="{{ c.image }}" alt="{{ c.title }}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block;"/></sc-if>
-                <div style="position: absolute; top: 14px; left: 14px; padding: 5px 10px; background: rgba(255,255,255,0.92); border-radius: 999px; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #4A9FBE; font-weight: 500;">{{ c.tag }}</div>
+                <div style="position: absolute; top: 14px; left: 14px; padding: 5px 10px; background: rgba(255,255,255,0.92); border-radius: 999px; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #1E5F7E; font-weight: 500;">{{ c.tag }}</div>
               </div>
               <div style="padding: 22px 22px 18px;">
                 <h3 style="font-family: 'Fraunces', serif; font-weight: 400; font-size: 20px; margin: 0 0 6px; letter-spacing: -0.01em;">{{ c.title }}</h3>
@@ -124,29 +124,29 @@
 
     <!-- Carousel controls -->
     <div style="display: flex; align-items: center; justify-content: center; gap: 24px; margin-top: 28px;">
-      <button onClick="{{ onCarouselPrev }}" aria-label="Anterior" style="width: 48px; height: 48px; border-radius: 50%; border: 1px solid #B8E5F0; background: #FFFFFF; color: #4A9FBE; cursor: pointer; display: grid; place-items: center; transition: all .25s ease;" class="fc-carousel-btn">
+      <button onClick="{{ onCarouselPrev }}" aria-label="Anterior" style="width: 48px; height: 48px; border-radius: 50%; border: 1px solid #B8E5F0; background: #FFFFFF; color: #1E5F7E; cursor: pointer; display: grid; place-items: center; transition: all .25s ease;" class="fc-carousel-btn">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
 
       <div style="display: flex; gap: 10px; align-items: center;">
-        <sc-for list="{{ carouselDots }}" as="d" hint-placeholder-count="6">
+        <sc-for list="{{ carouselDots }}" as="d" hint-placeholder-count="3">
           <button onClick="{{ d.onClick }}" aria-label="Ir para item {{ d.label }}" style="width: {{ d.w }}; height: 6px; border-radius: 999px; border: 0; padding: 0; background: {{ d.bg }}; cursor: pointer; transition: all .35s ease;"></button>
         </sc-for>
       </div>
 
-      <button onClick="{{ onCarouselNext }}" aria-label="Próximo" style="width: 48px; height: 48px; border-radius: 50%; border: 1px solid #B8E5F0; background: #FFFFFF; color: #4A9FBE; cursor: pointer; display: grid; place-items: center; transition: all .25s ease;" class="fc-carousel-btn">
+      <button onClick="{{ onCarouselNext }}" aria-label="Próximo" style="width: 48px; height: 48px; border-radius: 50%; border: 1px solid #B8E5F0; background: #FFFFFF; color: #1E5F7E; cursor: pointer; display: grid; place-items: center; transition: all .25s ease;" class="fc-carousel-btn">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 6l6 6-6 6"/></svg>
       </button>
     </div>
 
-    <div style="text-align: center; margin-top: 14px; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #B8E5F0;">arraste · clique · gire</div>
+    <div style="text-align: center; margin-top: 14px; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #7AA3B8;">arraste · clique · gire</div>
   </section>
 
   <!-- SOBRE -->
   <section id="sobre" class="fc-pad" style="position: relative; z-index: 3; padding: 140px 64px; background: #FFFFFF;">
     <div style="max-width: 1100px; margin: 0 auto;">
       <div class="fc-reveal" style="text-align: center; margin-bottom: 80px;">
-        <div style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #4A9FBE; margin-bottom: 16px;">— Sobre</div>
+        <div style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #1E5F7E; margin-bottom: 16px;">— Sobre</div>
         <h2 class="fc-section-title" style="font-family: 'Fraunces', serif; font-weight: 300; font-size: 52px; letter-spacing: -0.02em; line-height: 1.1; margin: 0 0 28px;">
           Pequenas peças,<br>grandes histórias.
         </h2>
@@ -158,7 +158,7 @@
       <div class="fc-cards" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
         <sc-for list="{{ features }}" as="f" hint-placeholder-count="3">
           <div class="fc-reveal fc-card" style="background: #FFFFFF; border: 1px solid #E8F4F8; border-radius: 20px; padding: 40px 32px; transition: transform .4s ease, box-shadow .4s ease;">
-            <div style="width: 56px; height: 56px; border-radius: 50%; background: #E8F4F8; display: grid; place-items: center; margin-bottom: 28px; color: #4A9FBE;" dangerouslySetInnerHTML="{{ f.iconHTML }}"></div>
+            <div style="width: 56px; height: 56px; border-radius: 50%; background: #E8F4F8; display: grid; place-items: center; margin-bottom: 28px; color: #1E5F7E;" dangerouslySetInnerHTML="{{ f.iconHTML }}"></div>
             <h3 style="font-family: 'Fraunces', serif; font-weight: 400; font-size: 22px; margin: 0 0 12px; letter-spacing: -0.01em;">{{ f.title }}</h3>
             <p style="font-size: 14px; line-height: 1.65; color: #5a6b78; margin: 0; font-weight: 300;">{{ f.desc }}</p>
           </div>
@@ -171,14 +171,14 @@
   <section id="contato" class="fc-pad" style="position: relative; z-index: 3; padding: 140px 64px; background: linear-gradient(180deg, #FFFFFF 0%, #F4FAFC 100%);">
     <div style="max-width: 860px; margin: 0 auto;">
       <div class="fc-reveal" style="text-align: center; margin-bottom: 64px;">
-        <div style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #4A9FBE; margin-bottom: 16px;">— Contato</div>
+        <div style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #1E5F7E; margin-bottom: 16px;">— Contato</div>
         <h2 class="fc-section-title" style="font-family: 'Fraunces', serif; font-weight: 300; font-size: 52px; letter-spacing: -0.02em; line-height: 1.1; margin: 0 0 20px;">Fale conosco.</h2>
         <p style="font-size: 16px; line-height: 1.6; color: #5a6b78; max-width: 480px; margin: 0 auto; font-weight: 300;">
           Conte-nos sua ideia. Respondemos em até 24h com um orçamento personalizado.
         </p>
       </div>
 
-      <form class="fc-reveal" onSubmit="{{ onSubmit }}" style="background: #FFFFFF; border: 1px solid #E8F4F8; border-radius: 24px; padding: 48px; box-shadow: 0 30px 80px -40px rgba(74, 159, 190, 0.25);">
+      <form class="fc-reveal" onSubmit="{{ onSubmit }}" style="background: #FFFFFF; border: 1px solid #E8F4F8; border-radius: 24px; padding: 48px; box-shadow: 0 30px 80px -40px rgba(30, 95, 126, 0.25);">
         <div class="fc-form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
           <div>
             <label style="display: block; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #7a8b98; margin-bottom: 10px;">Nome</label>
@@ -199,19 +199,19 @@
         </sc-if>
 
         <sc-if value="{{ formSuccess }}" hint-placeholder-val="{{ false }}">
-          <div style="padding: 16px 20px; background: #E8F4F8; border: 1px solid #B8E5F0; border-radius: 10px; color: #2c7a99; font-size: 14px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px;">
+          <div style="padding: 16px 20px; background: #E8F4F8; border: 1px solid #B8E5F0; border-radius: 10px; color: #154863; font-size: 14px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px;">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
             <span>Mensagem enviada! Em breve entraremos em contato.</span>
           </div>
         </sc-if>
 
-        <button type="submit" class="fc-submit" style="width: 100%; padding: 16px; background: #4A9FBE; color: #fff; border: none; border-radius: 12px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; transition: background .3s ease;">
+        <button type="submit" class="fc-submit" style="width: 100%; padding: 16px; background: #1E5F7E; color: #fff; border: none; border-radius: 12px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; transition: background .3s ease;">
           Enviar mensagem
         </button>
       </form>
 
       <div style="text-align: center; margin-top: 56px; font-size: 13px; color: #7a8b98; font-weight: 300;">
-        Ou nos encontre em <a href="#" class="fc-link" style="color: #4A9FBE; text-decoration: none; transition: color .2s;">@feitoemcasa</a> · Entregamos para todo o Brasil
+        Ou nos encontre em <a href="#" class="fc-link" style="color: #1E5F7E; text-decoration: none; transition: color .2s;">@feitoemcasa</a> · Entregamos para todo o Brasil
       </div>
     </div>
   </section>
@@ -222,7 +222,7 @@
   </footer>
 
   <!-- WHATSAPP FLOAT -->
-  <a href="https://wa.me/5511999999999?text=Olá!%20Gostaria%20de%20mais%20informações" target="_blank" rel="noopener" class="fc-wa" style="position: fixed; right: 28px; bottom: 28px; z-index: 100; display: inline-flex; align-items: center; gap: 10px; padding: 14px 20px; background: #4A9FBE; color: #fff; text-decoration: none; font-size: 14px; font-weight: 500; border-radius: 999px; box-shadow: 0 8px 24px rgba(74, 159, 190, 0.35); transition: transform .3s ease; animation: fcPulse 2.6s ease-in-out infinite;">
+  <a href="https://wa.me/5511999999999?text=Olá!%20Gostaria%20de%20mais%20informações" target="_blank" rel="noopener" class="fc-wa" style="position: fixed; right: 28px; bottom: 28px; z-index: 100; display: inline-flex; align-items: center; gap: 10px; padding: 14px 20px; background: #1E5F7E; color: #fff; text-decoration: none; font-size: 14px; font-weight: 500; border-radius: 999px; box-shadow: 0 8px 24px rgba(30, 95, 126, 0.35); transition: transform .3s ease; animation: fcPulse 2.6s ease-in-out infinite;">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.297-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.273.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.077 4.487.71.306 1.263.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/>
     </svg>

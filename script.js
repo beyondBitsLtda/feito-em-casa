@@ -66,7 +66,7 @@ class Component extends DCLogic {
         ctx.textBaseline = 'middle';
         ctx.fillText('feito', w / 2, h / 2 - 64);
         ctx.fillText('em casa', w / 2, h / 2 + 68);
-        ctx.strokeStyle = '#4A9FBE';
+        ctx.strokeStyle = '#1E5F7E';
         ctx.lineWidth = 4;
         ctx.beginPath();
         ctx.moveTo(w / 2 - 90, h / 2 + 6);
@@ -77,7 +77,7 @@ class Component extends DCLogic {
       (ctx, w, h) => {
         ctx.fillStyle = '#FFFFFF';
         ctx.fillRect(0, 0, w, h);
-        ctx.fillStyle = '#4A9FBE';
+        ctx.fillStyle = '#1E5F7E';
         const step = 56;
         for (let y = step / 2; y < h; y += step) {
           for (let x = step / 2; x < w; x += step) {
@@ -102,7 +102,7 @@ class Component extends DCLogic {
           ctx.lineTo(w, y);
           ctx.stroke();
         }
-        ctx.fillStyle = '#4A9FBE';
+        ctx.fillStyle = '#1E5F7E';
         const cx = w / 2, cy = h / 2;
         ctx.beginPath();
         ctx.moveTo(cx, cy + 55);
@@ -158,6 +158,54 @@ class Component extends DCLogic {
     this.blendTex.needsUpdate = true;
   }
 
+  // Cria um envMap procedural (gradiente claro tipo estúdio) usando PMREM
+  // para gerar reflexos suaves no acabamento cerâmico, sem dependência externa.
+  buildCeramicEnvMap() {
+    try {
+      const size = 256;
+      const canvas = document.createElement('canvas');
+      canvas.width = size; canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      // Gradiente vertical: teto claro -> horizonte -> chão escuro
+      const g = ctx.createLinearGradient(0, 0, 0, size);
+      g.addColorStop(0.00, '#ffffff');
+      g.addColorStop(0.45, '#eaf3f7');
+      g.addColorStop(0.55, '#cfe2ea');
+      g.addColorStop(1.00, '#3a4a55');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, size, size);
+      // "Softbox" superior — highlight forte no topo
+      const sb = ctx.createRadialGradient(size * 0.5, size * 0.18, 4, size * 0.5, size * 0.18, size * 0.45);
+      sb.addColorStop(0, 'rgba(255,255,255,1)');
+      sb.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = sb;
+      ctx.fillRect(0, 0, size, size);
+      // Janela lateral — segundo highlight
+      const sb2 = ctx.createRadialGradient(size * 0.15, size * 0.4, 2, size * 0.15, size * 0.4, size * 0.35);
+      sb2.addColorStop(0, 'rgba(255,255,255,0.85)');
+      sb2.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = sb2;
+      ctx.fillRect(0, 0, size, size);
+
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.mapping = THREE.EquirectangularReflectionMapping;
+      if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
+
+      if (THREE.PMREMGenerator) {
+        const pmrem = new THREE.PMREMGenerator(this.renderer);
+        pmrem.compileEquirectangularShader();
+        const target = pmrem.fromEquirectangular(tex);
+        tex.dispose();
+        pmrem.dispose();
+        return target.texture;
+      }
+      return tex;
+    } catch (e) {
+      console.warn('envMap build failed', e);
+      return null;
+    }
+  }
+
   // ---------- THREE ----------
   initThree() {
     if (typeof THREE === 'undefined') {
@@ -170,8 +218,11 @@ class Component extends DCLogic {
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(32, w / h, 0.1, 100);
-    this.camera.position.set(0, 0.4, 7.0);
-    this.camera.lookAt(0, 0, 0);
+    // Distância maior — câmera afastada para dar mais "ar" ao redor da caneca
+    this.cameraRadius = 10.5;
+    this.cameraTargetY = 0.0;
+    this.camera.position.set(0, 0.6, this.cameraRadius);
+    this.camera.lookAt(0, this.cameraTargetY, 0);
 
     this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
@@ -179,6 +230,14 @@ class Component extends DCLogic {
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     if ('outputColorSpace' in this.renderer) this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+    // Tone mapping para realçar o brilho cerâmico
+    if ('toneMapping' in this.renderer) {
+      this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      this.renderer.toneMappingExposure = 1.05;
+    }
+
+    // Environment map procedural (gradiente claro) para reflexos cerâmicos
+    this.scene.environment = this.buildCeramicEnvMap();
 
     // Lights
     this.scene.add(new THREE.AmbientLight(0xffffff, 0.75));
@@ -238,16 +297,25 @@ class Component extends DCLogic {
     }
     const bodyGeo = new THREE.LatheGeometry(points, 96);
 
-    this.outerMat = new THREE.MeshStandardMaterial({
+    // Material cerâmico brilhoso (porcelana esmaltada) — clearcoat + baixa rugosidade
+    const PhysMat = THREE.MeshPhysicalMaterial || THREE.MeshStandardMaterial;
+    this.outerMat = new PhysMat({
       color: 0xffffff,
-      roughness: 0.45,
-      metalness: 0.0,
+      roughness: 0.18,
+      metalness: 0.02,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.05,
+      reflectivity: 0.55,
+      envMapIntensity: 1.15,
       map: this.blendTex,
     });
-    this.innerMat = new THREE.MeshStandardMaterial({
-      color: 0xE8F4F8,
-      roughness: 0.5,
-      metalness: 0.0,
+    this.innerMat = new PhysMat({
+      color: 0xEAF5F9,
+      roughness: 0.2,
+      metalness: 0.02,
+      clearcoat: 0.9,
+      clearcoatRoughness: 0.08,
+      envMapIntensity: 1.0,
       side: THREE.DoubleSide,
     });
 
@@ -266,7 +334,15 @@ class Component extends DCLogic {
     this.mug.add(innerBottom);
 
     // Handle
-    const handleMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.45 });
+    const PhysMat2 = THREE.MeshPhysicalMaterial || THREE.MeshStandardMaterial;
+    const handleMat = new PhysMat2({
+      color: 0xffffff,
+      roughness: 0.18,
+      metalness: 0.02,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.05,
+      envMapIntensity: 1.15,
+    });
     const handle = new THREE.Mesh(new THREE.TorusGeometry(0.45, 0.10, 24, 64, Math.PI * 1.1), handleMat);
     handle.position.set(1.05, 0.0, 0);
     handle.rotation.z = -Math.PI / 2;
@@ -302,14 +378,14 @@ class Component extends DCLogic {
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillText('feito', 0, 82);
         ctx.fillText('em casa', 0, 212);
-        ctx.strokeStyle = '#4A9FBE'; ctx.lineWidth = 4;
+        ctx.strokeStyle = '#1E5F7E'; ctx.lineWidth = 4;
         ctx.beginPath(); ctx.moveTo(-100, 6); ctx.lineTo(100, 6); ctx.stroke();
         ctx.restore();
       },
       // 2: dots
       (ctx, w, h) => {
         ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0,0,w,h);
-        ctx.fillStyle = '#4A9FBE';
+        ctx.fillStyle = '#1E5F7E';
         const step = 56;
         for (let y = step/2; y < h; y += step) {
           for (let x = step/2; x < w; x += step) {
@@ -328,7 +404,7 @@ class Component extends DCLogic {
         for (let y = 60; y < h; y += 80) {
           ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke();
         }
-        ctx.fillStyle = '#4A9FBE';
+        ctx.fillStyle = '#1E5F7E';
         const cx = w/2, cy = h/2;
         ctx.beginPath();
         ctx.moveTo(cx, cy+55);
@@ -346,6 +422,8 @@ class Component extends DCLogic {
       this.camera.updateProjectionMatrix();
       this.renderer.setSize(w, h, false);
     }
+    // força recomputo do coverflow (spread mobile vs desktop)
+    this.forceUpdate && this.forceUpdate();
   };
 
   // smoothstep helper
@@ -370,36 +448,45 @@ class Component extends DCLogic {
     const A = this.stops[i];
     const B = this.stops[i + 1];
 
-    // Position: lerp x, lerp y, plus a parabolic "jump arc"
-    const x = this.lerp(A.x, B.x, eased) * 1.8;
-    let y = this.lerp(A.y, B.y, eased);
-    const arc = Math.sin(localT * Math.PI) * 0.85; // hop arc height
-    y += arc;
-
-    // Mug position in 3D space
-    this.mug.position.x = x;
-    this.mug.position.y = -0.1 + y + Math.sin(elapsed * 0.9) * 0.03;
+    // Caneca fica praticamente centrada — quem se move agora é a câmera.
+    // Mantemos um leve "respirar" vertical e escala suave por painel.
+    this.mug.position.x = 0;
+    this.mug.position.y = -0.1 + Math.sin(elapsed * 0.9) * 0.03;
     this.mug.position.z = 0;
 
-    // Scale
-    const scale = this.lerp(A.s, B.s, eased) * (1 - arc * 0.04);
+    const scale = this.lerp(A.s, B.s, eased);
     this.mug.scale.setScalar(scale);
 
-    // Rotation: LOCKED facing front so the logo stays centered (handle right).
+    // Rotação base da caneca: levemente girada para não ficar 100% frontal,
+    // mas mantendo a logo visível na maior parte do percurso.
     this.mug.rotation.y = 0;
-    // Subtle, gentle base x tilt only — no tumble.
     this.mug.rotation.x = 0.05 + Math.sin(elapsed * 0.6) * 0.015;
-    // tilt z slightly when off-center
-    this.mug.rotation.z = x * 0.02;
+    this.mug.rotation.z = 0;
 
-    // ---- TEXTURE LOCKED to design 0 (logo) ----
-    // No more progressive blend across panels.
+    // -------- CÂMERA ORBITAL --------
+    // Ao rolar a página a câmera dá uma volta parcial ao redor da caneca
+    // e varia a altura, revelando ângulos diferentes (frente -> lado -> alça -> trás levemente).
+    // Range: de -25° a +200° aprox. para mostrar bastante coisa.
+    const minAngle = -Math.PI * 0.14;   // ~ -25°
+    const maxAngle =  Math.PI * 1.10;   // ~ +198°
+    const orbitAngle = this.lerp(minAngle, maxAngle, this.smoothstep(sp));
+    // Altura da câmera oscila suavemente: começa um pouco acima, desce no meio, sobe no fim.
+    const camY = 0.6 + Math.sin(sp * Math.PI) * -0.6 + Math.sin(elapsed * 0.5) * 0.04;
+    // Distância respira de leve com o scroll para sensação cinematográfica.
+    const camR = this.cameraRadius + Math.sin(sp * Math.PI) * 0.8;
+
+    this.camera.position.x = Math.sin(orbitAngle) * camR;
+    this.camera.position.z = Math.cos(orbitAngle) * camR;
+    this.camera.position.y = camY;
+    this.camera.lookAt(0, this.cameraTargetY + this.mug.position.y * 0.5, 0);
+
+    // ---- TEXTURA travada no design 0 (logo) ----
     this.updateBlendedTexture(0, 0, 0);
 
-    // Glow position via DOM
+    // Glow position via DOM (mantém efeito visual no fundo)
     if (this.glowRef.current) {
-      const xPct = 50 + this.lerp(A.x, B.x, eased) * 30; // map -1..1 to 20..80
-      const yPct = 50 - this.lerp(A.y, B.y, eased) * 8;
+      const xPct = 50 + Math.sin(orbitAngle) * 22;
+      const yPct = 50 - Math.sin(sp * Math.PI) * 6;
       this.glowRef.current.style.transition = 'none';
       this.glowRef.current.style.left = xPct + '%';
       this.glowRef.current.style.top = yPct + '%';
@@ -599,28 +686,10 @@ class Component extends DCLogic {
         image: (window.__resources && window.__resources.carousel2) || 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80&auto=format&fit=crop',
       },
       {
-        tag: 'Sacola',
-        title: 'Tote bag de algodão',
-        desc: 'Ecobag reforçada para o dia a dia, com sua arte exclusiva nos dois lados.',
-        image: (window.__resources && window.__resources.carousel3) || 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=800&q=80&auto=format&fit=crop',
-      },
-      {
-        tag: 'Almofada',
-        title: 'Almofada decorativa',
-        desc: 'Capa em sarja com enchimento siliconado — frase ou ilustração à sua escolha.',
-        image: (window.__resources && window.__resources.carousel4) || 'https://images.unsplash.com/photo-1592078615290-033ee584e267?w=800&q=80&auto=format&fit=crop',
-      },
-      {
-        tag: 'Boné',
-        title: 'Boné bordado',
-        desc: 'Aba curva, fecho ajustável e bordado computadorizado de alta definição.',
-        image: (window.__resources && window.__resources.carousel5) || 'https://images.unsplash.com/photo-1521369909029-2afed882baee?w=800&q=80&auto=format&fit=crop',
-      },
-      {
-        tag: 'Papelaria',
-        title: 'Caderno e adesivos',
-        desc: 'Kits papelaria personalizados — perfeitos para brindes e lembrancinhas.',
-        image: (window.__resources && window.__resources.carousel6) || 'https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=800&q=80&auto=format&fit=crop',
+        tag: 'Garrafa',
+        title: 'Garrafa esportiva',
+        desc: 'Squeeze de corrida com bico anti-vazamento e a sua arte aplicada — leve, resistente e livre de BPA.',
+        image: (window.__resources && window.__resources.carousel3) || 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=800&q=80&auto=format&fit=crop',
       },
     ];
   }
@@ -671,8 +740,8 @@ class Component extends DCLogic {
       const active = i === this.state.activePanel;
       progressDots.push({
         num: String(i + 1).padStart(2, '0'),
-        color: active ? '#4A9FBE' : '#B8E5F0',
-        barColor: active ? '#4A9FBE' : '#E8F4F8',
+        color: active ? '#1E5F7E' : '#B8E5F0',
+        barColor: active ? '#1E5F7E' : '#E8F4F8',
       });
     }
 
@@ -680,16 +749,20 @@ class Component extends DCLogic {
     const carouselSrc = this.carouselSource();
     const total = carouselSrc.length;
     const active = this.state.carouselIndex;
+    const isMobile = (typeof window !== 'undefined') && window.innerWidth <= 720;
+    const spreadX = isMobile ? 150 : 260;
+    const tzStep  = isMobile ? 110 : 160;
+    const rotStep = isMobile ? 26  : 34;
     const carouselItems = carouselSrc.map((item, i) => {
       let rel = i - active;
       if (rel > total / 2) rel -= total;
       if (rel < -total / 2) rel += total;
       const abs = Math.abs(rel);
-      const x = rel * 230;
-      const rotY = -rel * 32;
-      const tz = -abs * 140;
-      const scale = abs === 0 ? 1 : (abs === 1 ? 0.9 : 0.78);
-      const opacity = abs <= 2 ? (abs === 0 ? 1 : (abs === 1 ? 0.85 : 0.45)) : 0;
+      const x = rel * spreadX;
+      const rotY = -rel * rotStep;
+      const tz = -abs * tzStep;
+      const scale = abs === 0 ? 1 : (abs === 1 ? 0.88 : 0.75);
+      const opacity = abs <= 2 ? (abs === 0 ? 1 : (abs === 1 ? 0.88 : 0.45)) : 0;
       const z = 100 - abs;
       return {
         ...item,
@@ -703,7 +776,7 @@ class Component extends DCLogic {
 
     const carouselDots = carouselSrc.map((_, i) => ({
       label: i + 1,
-      bg: i === active ? '#4A9FBE' : '#E8F4F8',
+      bg: i === active ? '#1E5F7E' : '#E8F4F8',
       w: i === active ? '28px' : '6px',
       onClick: () => this.goToCarousel(i),
     }));
