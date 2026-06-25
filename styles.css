@@ -1,0 +1,40 @@
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: 'Inter', sans-serif; background: #FFFFFF; color: #1a2733; -webkit-font-smoothing: antialiased; }
+    *, *::before, *::after { box-sizing: border-box; }
+    @keyframes fcFadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fcFadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fcPulse {
+      0%, 100% { box-shadow: 0 8px 24px rgba(74, 159, 190, 0.35), 0 0 0 0 rgba(74, 159, 190, 0.45); }
+      50% { box-shadow: 0 8px 24px rgba(74, 159, 190, 0.35), 0 0 0 14px rgba(74, 159, 190, 0); }
+    }
+    @keyframes fcDot { 0%, 100% { transform: translateY(0); opacity: .4; } 50% { transform: translateY(-4px); opacity: 1; } }
+    .fc-reveal { opacity: 0; }
+    .fc-reveal.fc-in { animation: fcFadeUp .9s cubic-bezier(.2,.7,.2,1) forwards; }
+    .fc-card:hover { transform: translateY(-6px); box-shadow: 0 24px 60px -28px rgba(74, 159, 190, 0.45) !important; }
+    .fc-cta:hover { background: #1a2733 !important; color: #fff !important; }
+    .fc-submit:hover { background: #2c7a99 !important; }
+    .fc-wa:hover { transform: translateY(-2px) scale(1.02); }
+    .fc-input:focus { outline: none; border-color: #4A9FBE !important; background: #fff !important; }
+    .fc-link:hover { color: #4A9FBE; }
+    .fc-carousel-btn:hover { background: #4A9FBE !important; color: #FFFFFF !important; border-color: #4A9FBE !important; transform: scale(1.05); }
+    .fc-carousel { cursor: grab; }
+    .fc-carousel:active { cursor: grabbing; }
+    .fc-progress-dot { animation: fcDot 1.5s ease-in-out infinite; }
+    .fc-panel-active .fc-panel-inner { animation: fcFadeUp .8s cubic-bezier(.2,.7,.2,1) both; }
+    @media (max-width: 720px) {
+      .fc-hero-title { font-size: 38px !important; }
+      .fc-section-title { font-size: 34px !important; }
+      .fc-cards { grid-template-columns: 1fr !important; }
+      .fc-form-row { grid-template-columns: 1fr !important; }
+      .fc-pad { padding-left: 24px !important; padding-right: 24px !important; }
+      .fc-nav { padding: 16px 22px !important; }
+      .fc-wa { right: 18px !important; bottom: 18px !important; padding: 12px 16px !important; font-size: 13px !important; }
+      .fc-panel { padding: 100px 22px 80px !important; }
+      .fc-panel-text { max-width: 100% !important; text-align: center !important; }
+      .fc-panel-left .fc-panel-text, .fc-panel-right .fc-panel-text { margin: 0 auto !important; }
+      .fc-progress { display: none !important; }
+      .fc-nav-links { gap: 18px !important; font-size: 11px !important; }
+      .fc-carousel { min-height: 380px !important; }
+      .fc-carousel-track { transform: scale(0.62); }
+      .fc-interactive3d { height: 380px !important; }
+    }
