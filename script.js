@@ -7,6 +7,7 @@ class Component extends DCLogic {
       formData: { name: '', email: '', message: '' },
       formError: '',
       formSuccess: false,
+      formSending: false,
     };
     this.carouselAutoTimer = null;
     this.carouselDrag = null;
@@ -66,7 +67,7 @@ class Component extends DCLogic {
         ctx.textBaseline = 'middle';
         ctx.fillText('feito', w / 2, h / 2 - 64);
         ctx.fillText('em casa', w / 2, h / 2 + 68);
-        ctx.strokeStyle = '#1E5F7E';
+        ctx.strokeStyle = '#0000FF';
         ctx.lineWidth = 4;
         ctx.beginPath();
         ctx.moveTo(w / 2 - 90, h / 2 + 6);
@@ -77,7 +78,7 @@ class Component extends DCLogic {
       (ctx, w, h) => {
         ctx.fillStyle = '#FFFFFF';
         ctx.fillRect(0, 0, w, h);
-        ctx.fillStyle = '#1E5F7E';
+        ctx.fillStyle = '#0000FF';
         const step = 56;
         for (let y = step / 2; y < h; y += step) {
           for (let x = step / 2; x < w; x += step) {
@@ -102,7 +103,7 @@ class Component extends DCLogic {
           ctx.lineTo(w, y);
           ctx.stroke();
         }
-        ctx.fillStyle = '#1E5F7E';
+        ctx.fillStyle = '#0000FF';
         const cx = w / 2, cy = h / 2;
         ctx.beginPath();
         ctx.moveTo(cx, cy + 55);
@@ -378,14 +379,14 @@ class Component extends DCLogic {
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillText('feito', 0, 82);
         ctx.fillText('em casa', 0, 212);
-        ctx.strokeStyle = '#1E5F7E'; ctx.lineWidth = 4;
+        ctx.strokeStyle = '#0000FF'; ctx.lineWidth = 4;
         ctx.beginPath(); ctx.moveTo(-100, 6); ctx.lineTo(100, 6); ctx.stroke();
         ctx.restore();
       },
       // 2: dots
       (ctx, w, h) => {
         ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0,0,w,h);
-        ctx.fillStyle = '#1E5F7E';
+        ctx.fillStyle = '#0000FF';
         const step = 56;
         for (let y = step/2; y < h; y += step) {
           for (let x = step/2; x < w; x += step) {
@@ -404,7 +405,7 @@ class Component extends DCLogic {
         for (let y = 60; y < h; y += 80) {
           ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke();
         }
-        ctx.fillStyle = '#1E5F7E';
+        ctx.fillStyle = '#0000FF';
         const cx = w/2, cy = h/2;
         ctx.beginPath();
         ctx.moveTo(cx, cy+55);
@@ -567,7 +568,54 @@ class Component extends DCLogic {
       this.setState({ formError: 'Por favor, informe um email válido.', formSuccess: false });
       return;
     }
-    this.setState({ formError: '', formSuccess: true, formData: { name: '', email: '', message: '' } });
+
+    // Envia para feitoemcasa1993@gmail.com via FormSubmit (sem backend).
+    // Importante: na PRIMEIRA submissão real, o FormSubmit envia um e-mail
+    // de ativação para feitoemcasa1993@gmail.com. Basta clicar no link de
+    // confirmação uma única vez — depois disso todas as mensagens passam a chegar.
+    this.setState({ formError: '', formSending: true, formSuccess: false });
+
+    const payload = new FormData();
+    payload.append('name', name);
+    payload.append('email', email);
+    payload.append('message', message);
+    payload.append('_subject', 'Novo contato — Feito em Casa');
+    payload.append('_template', 'table');
+    payload.append('_captcha', 'false');
+
+    fetch('https://formsubmit.co/ajax/feitoemcasa1993@gmail.com', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: payload,
+    })
+      .then(r => r.json())
+      .then(data => {
+        if (data && (data.success === 'true' || data.success === true)) {
+          this.setState({
+            formError: '',
+            formSending: false,
+            formSuccess: true,
+            formData: { name: '', email: '', message: '' },
+          });
+        } else {
+          throw new Error('falha no envio');
+        }
+      })
+      .catch(() => {
+        // Fallback: abre o cliente de e-mail do usuário com a mensagem pronta.
+        const subject = encodeURIComponent('Novo contato — Feito em Casa');
+        const body = encodeURIComponent(
+          'Nome: ' + name + '\n' +
+          'E-mail: ' + email + '\n\n' +
+          'Mensagem:\n' + message
+        );
+        window.location.href = 'mailto:feitoemcasa1993@gmail.com?subject=' + subject + '&body=' + body;
+        this.setState({
+          formSending: false,
+          formError: 'Não conseguimos enviar pelo site. Abrimos seu app de e-mail para concluir o envio.',
+          formSuccess: false,
+        });
+      });
   };
 
   // ---------- LOGO TEXTURE ----------
@@ -677,13 +725,13 @@ class Component extends DCLogic {
         tag: 'Caneca',
         title: 'Caneca cerâmica',
         desc: 'Sua arte vitrificada, segura para microondas. Pequenos lotes, acabamento à mão.',
-        image: (window.__resources && window.__resources.carousel1) || 'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=800&q=80&auto=format&fit=crop',
+        image: (window.__resources && window.__resources.carousel1) || 'caneca.png',
       },
       {
         tag: 'Camiseta',
         title: 'Camiseta personalizada',
         desc: 'Algodão 100% brasileiro com estampa em DTF de longa durabilidade.',
-        image: (window.__resources && window.__resources.carousel2) || 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80&auto=format&fit=crop',
+        image: (window.__resources && window.__resources.carousel2) || 'camisa.jpg',
       },
       {
         tag: 'Garrafa',
@@ -740,8 +788,8 @@ class Component extends DCLogic {
       const active = i === this.state.activePanel;
       progressDots.push({
         num: String(i + 1).padStart(2, '0'),
-        color: active ? '#1E5F7E' : '#B8E5F0',
-        barColor: active ? '#1E5F7E' : '#E8F4F8',
+        color: active ? '#0000FF' : '#B8E5F0',
+        barColor: active ? '#0000FF' : '#E8F4F8',
       });
     }
 
@@ -776,7 +824,7 @@ class Component extends DCLogic {
 
     const carouselDots = carouselSrc.map((_, i) => ({
       label: i + 1,
-      bg: i === active ? '#1E5F7E' : '#E8F4F8',
+      bg: i === active ? '#0000FF' : '#E8F4F8',
       w: i === active ? '28px' : '6px',
       onClick: () => this.goToCarousel(i),
     }));
@@ -813,6 +861,9 @@ class Component extends DCLogic {
       formData: this.state.formData,
       formError: this.state.formError,
       formSuccess: this.state.formSuccess,
+      formSending: this.state.formSending,
+      submitLabel: this.state.formSending ? 'Enviando...' : 'Enviar mensagem',
+      submitOpacity: this.state.formSending ? 0.6 : 1,
       onChange: this.onChange,
       onSubmit: this.onSubmit,
     };

@@ -1,22 +1,22 @@
-html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; }
     body { margin: 0; font-family: 'Inter', sans-serif; background: #FFFFFF; color: #1a2733; -webkit-font-smoothing: antialiased; }
     *, *::before, *::after { box-sizing: border-box; }
     @keyframes fcFadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes fcFadeIn { from { opacity: 0; } to { opacity: 1; } }
     @keyframes fcPulse {
-      0%, 100% { box-shadow: 0 8px 24px rgba(30, 95, 126, 0.35), 0 0 0 0 rgba(30, 95, 126, 0.45); }
-      50% { box-shadow: 0 8px 24px rgba(30, 95, 126, 0.35), 0 0 0 14px rgba(30, 95, 126, 0); }
+      0%, 100% { box-shadow: 0 8px 24px rgba(0, 0, 255, 0.35), 0 0 0 0 rgba(0, 0, 255, 0.45); }
+      50% { box-shadow: 0 8px 24px rgba(0, 0, 255, 0.35), 0 0 0 14px rgba(0, 0, 255, 0); }
     }
     @keyframes fcDot { 0%, 100% { transform: translateY(0); opacity: .4; } 50% { transform: translateY(-4px); opacity: 1; } }
     .fc-reveal { opacity: 0; }
     .fc-reveal.fc-in { animation: fcFadeUp .9s cubic-bezier(.2,.7,.2,1) forwards; }
-    .fc-card:hover { transform: translateY(-6px); box-shadow: 0 24px 60px -28px rgba(30, 95, 126, 0.45) !important; }
+    .fc-card:hover { transform: translateY(-6px); box-shadow: 0 24px 60px -28px rgba(0, 0, 255, 0.45) !important; }
     .fc-cta:hover { background: #1a2733 !important; color: #fff !important; }
-    .fc-submit:hover { background: #154863 !important; }
+    .fc-submit:hover { background: #0000CC !important; }
     .fc-wa:hover { transform: translateY(-2px) scale(1.02); }
-    .fc-input:focus { outline: none; border-color: #1E5F7E !important; background: #fff !important; }
-    .fc-link:hover { color: #1E5F7E; }
-    .fc-carousel-btn:hover { background: #1E5F7E !important; color: #FFFFFF !important; border-color: #1E5F7E !important; transform: scale(1.05); }
+    .fc-input:focus { outline: none; border-color: #0000FF !important; background: #fff !important; }
+    .fc-link:hover { color: #0000FF; }
+    .fc-carousel-btn:hover { background: #0000FF !important; color: #FFFFFF !important; border-color: #0000FF !important; transform: scale(1.05); }
     .fc-carousel { cursor: grab; }
     .fc-carousel:active { cursor: grabbing; }
     .fc-progress-dot { animation: fcDot 1.5s ease-in-out infinite; }
