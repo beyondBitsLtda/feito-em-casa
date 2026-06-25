@@ -725,13 +725,13 @@ class Component extends DCLogic {
         tag: 'Caneca',
         title: 'Caneca cerâmica',
         desc: 'Sua arte vitrificada, segura para microondas. Pequenos lotes, acabamento à mão.',
-        image: (window.__resources && window.__resources.carousel1) || 'caneca.png',
+        image: (window.__resources && window.__resources.carousel1) || './assets/caneca.png',
       },
       {
         tag: 'Camiseta',
         title: 'Camiseta personalizada',
         desc: 'Algodão 100% brasileiro com estampa em DTF de longa durabilidade.',
-        image: (window.__resources && window.__resources.carousel2) || 'camisa.jpg',
+        image: (window.__resources && window.__resources.carousel2) || './assets/camisa.jpg',
       },
       {
         tag: 'Garrafa',
