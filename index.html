@@ -16,7 +16,7 @@
   <meta name="ext-resource-dependency" content="./assets/caneca.png" data-resource-id="carousel1">
   <meta name="ext-resource-dependency" content="./assets/camisa.jpg" data-resource-id="carousel2">
   <meta name="ext-resource-dependency" content="./assets/garrafa.jpg" data-resource-id="carousel3">
-  <meta name="ext-resource-dependency" content="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80&auto=format&fit=crop" data-resource-id="carousel4">
+  <meta name="ext-resource-dependency" content="./assets/azulejo.jpg" data-resource-id="carousel4">
   <meta name="ext-resource-dependency" content="./assets/ecobag.jpg" data-resource-id="carousel5">
   <meta name="ext-resource-dependency" content="./assets/asset-caneca-transparente.png" data-resource-id="parallaxMug">
   <template id="__bundler_thumbnail" data-bg-color="#F8FBFC">
@@ -169,9 +169,6 @@
 
   <!-- CONTATO -->
   <section id="contato" class="fc-pad" style="position: relative; z-index: 3; padding: 140px 64px; background: linear-gradient(180deg, #FFFFFF 0%, #F4FAFC 100%); overflow: hidden;">
-    <!-- Parallax: caneca transparente flutuando ao fundo da sessão -->
-    <img id="fc-parallax-mug" src="./assets/asset-caneca-transparente.png" alt="" aria-hidden="true"
-         style="position: absolute; top: 50%; left: 50%; width: min(720px, 95vw); max-width: none; transform: translate3d(-50%, -50%, 0); opacity: 0.22; pointer-events: none; z-index: 0; filter: drop-shadow(0 30px 60px rgba(0,0,255,0.18)); will-change: transform, opacity; user-select: none;"/>
     <div style="max-width: 860px; margin: 0 auto; position: relative; z-index: 1;">
       <div class="fc-reveal" style="text-align: center; margin-bottom: 64px;">
         <div style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #0000FF; margin-bottom: 16px;">— Contato</div>
@@ -216,6 +213,25 @@
       <div style="text-align: center; margin-top: 56px; font-size: 13px; color: #7a8b98; font-weight: 300;">
         Ou nos encontre em <a href="#" class="fc-link" style="color: #0000FF; text-decoration: none; transition: color .2s;">@feitoemcasa</a> · Entregamos para todo o Brasil
       </div>
+    </div>
+
+    <!-- PARALLAX FRONTAL: canecas borradas POR CIMA do form (pointer-events: none) -->
+    <div class="fc-parallax-layer" aria-hidden="true" style="position: absolute; inset: 0; z-index: 5; pointer-events: none; overflow: hidden;">
+      <img class="fc-pm" data-speed="-0.35" data-rot="-14" data-blur="6"
+           src="./assets/asset-caneca-transparente.png" alt=""
+           style="position: absolute; top: -4%; left: -6%; width: 340px; opacity: 0.55; transform: rotate(-14deg); filter: blur(6px);"/>
+      <img class="fc-pm" data-speed="0.42" data-rot="22" data-blur="7"
+           src="./assets/asset-caneca-transparente.png" alt=""
+           style="position: absolute; top: 2%; right: -5%; width: 380px; opacity: 0.5; transform: rotate(22deg); filter: blur(7px);"/>
+      <img class="fc-pm" data-speed="-0.28" data-rot="8" data-blur="5"
+           src="./assets/asset-caneca-transparente.png" alt=""
+           style="position: absolute; top: 38%; left: -8%; width: 260px; opacity: 0.4; transform: rotate(8deg); filter: blur(5px);"/>
+      <img class="fc-pm" data-speed="0.5" data-rot="-18" data-blur="8"
+           src="./assets/asset-caneca-transparente.png" alt=""
+           style="position: absolute; bottom: -6%; right: -4%; width: 420px; opacity: 0.55; transform: rotate(-18deg); filter: blur(8px);"/>
+      <img class="fc-pm" data-speed="-0.55" data-rot="32" data-blur="6"
+           src="./assets/asset-caneca-transparente.png" alt=""
+           style="position: absolute; bottom: 4%; left: 12%; width: 300px; opacity: 0.45; transform: rotate(32deg); filter: blur(6px);"/>
     </div>
   </section>
 
