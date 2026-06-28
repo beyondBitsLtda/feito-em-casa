@@ -1,4 +1,4 @@
-    html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; }
     body { margin: 0; font-family: 'Inter', sans-serif; background: #FFFFFF; color: #1a2733; -webkit-font-smoothing: antialiased; }
     *, *::before, *::after { box-sizing: border-box; }
     @keyframes fcFadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
@@ -40,6 +40,7 @@
       .fc-card3d { width: 86vw !important; max-width: 340px !important; height: 440px !important; margin-left: -43vw !important; margin-top: -220px !important; transform-origin: 50% 50% !important; }
       .fc-card3d > div > div:first-child { height: 280px !important; }
       .fc-interactive3d { height: 380px !important; }
-      /* Parallax mug menor no mobile */
-      #fc-parallax-mug { width: 110vw !important; opacity: 0.18 !important; }
+      /* Canecas parallax menores e um pouco menos opacas no mobile */
+      .fc-parallax-layer .fc-pm { width: 60vw !important; opacity: 0.42 !important; }
     }
+    .fc-pm { will-change: transform, filter; user-select: none; }
