@@ -530,23 +530,26 @@ class Component extends DCLogic {
         }
       }
 
-      // -------- PARALLAX: caneca transparente na seção CONTATO --------
-      const parallaxEl = document.getElementById('fc-parallax-mug');
+      // -------- PARALLAX: canecas frontais sobre a seção CONTATO --------
       const contato = document.getElementById('contato');
-      if (parallaxEl && contato) {
+      if (contato) {
         const cr = contato.getBoundingClientRect();
         const vh = window.innerHeight;
-        // Progresso: começa quando a seção entra na tela, termina quando sai pelo topo.
-        const start = vh;          // topo do contato ainda fora da tela (em baixo)
-        const end   = -cr.height;  // topo já saiu pelo topo da tela
-        const raw = (cr.top - end) / (start - end); // 1 -> 0
-        const p = Math.max(0, Math.min(1, raw));
-        // Movimenta o asset verticalmente (parallax suave) e dá leve rotação.
-        const translate = (p - 0.5) * 180; // -90px a +90px
-        const rotate = (p - 0.5) * -8;     // leve giro
-        parallaxEl.style.transform =
-          'translate3d(-50%, calc(-50% + ' + translate.toFixed(1) + 'px), 0) rotate(' + rotate.toFixed(2) + 'deg)';
-        parallaxEl.style.opacity = (0.18 + (1 - Math.abs(p - 0.5) * 2) * 0.22).toFixed(3);
+        // Progresso: -1 (seção ainda abaixo) -> 0 (centralizada) -> 1 (já passou pelo topo)
+        const center = cr.top + cr.height / 2;
+        const norm = (vh / 2 - center) / ((vh + cr.height) / 2);
+        const p = Math.max(-1, Math.min(1, norm));
+        if (!this._pmugs) this._pmugs = Array.from(document.querySelectorAll('.fc-pm'));
+        this._pmugs.forEach((el) => {
+          const speed = parseFloat(el.dataset.speed || '0.3');
+          const rot = parseFloat(el.dataset.rot || '0');
+          const blur = el.dataset.blur || '6';
+          const ty = p * 120 * speed; // px
+          const tx = p * 30 * speed;  // leve deslocamento lateral
+          const dr = p * 6 * Math.sign(speed); // rotação extra com o scroll
+          el.style.transform = 'translate3d(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px,0) rotate(' + (rot + dr).toFixed(2) + 'deg)';
+          el.style.filter = 'blur(' + blur + 'px)';
+        });
       }
     };
     window.addEventListener('scroll', this.onScroll, { passive: true });
@@ -762,7 +765,7 @@ class Component extends DCLogic {
         tag: 'Azulejo',
         title: 'Azulejo decorativo',
         desc: 'Sua arte vitrificada em cerâmica 15×15 cm. Perfeito para cozinhas, lembranças e quadros personalizados.',
-        image: (window.__resources && window.__resources.carousel4) || 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80&auto=format&fit=crop',
+        image: (window.__resources && window.__resources.carousel4) || './assets/azulejo.jpg',
       },
       {
         tag: 'Ecobag',
