@@ -3,251 +3,547 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="ext-resource-dependency" content="uploads/toy1.png" data-resource-id="toy1" />
+<meta name="ext-resource-dependency" content="uploads/toy2.png" data-resource-id="toy2" />
+<meta name="ext-resource-dependency" content="uploads/toy3.png" data-resource-id="toy3" />
+<meta name="ext-resource-dependency" content="uploads/asset-caneca-transparente.png" data-resource-id="caneca" />
 <script src="./support.js"></script>
 </head>
 <body>
+<template id="__bundler_thumbnail" data-bg-color="#1ea7ff">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#1ea7ff"/>
+    <circle cx="600" cy="400" r="190" fill="#2a6fdb"/>
+    <circle cx="600" cy="400" r="190" fill="none" stroke="#ffffff" stroke-width="10" opacity="0.6"/>
+    <circle cx="330" cy="250" r="60" fill="#e63950"/>
+    <circle cx="880" cy="540" r="80" fill="#2a4fd6"/>
+    <circle cx="900" cy="220" r="34" fill="#f06a25"/>
+    <text x="600" y="430" font-family="Georgia, serif" font-style="italic" font-weight="700" font-size="120" fill="#ffffff" text-anchor="middle">MF</text>
+  </svg>
+</template>
 <x-dc>
 <helmet>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
-  <meta name="ext-resource-dependency" content="./assets/logo.png" data-resource-id="logoImg">
-  <meta name="ext-resource-dependency" content="./assets/caneca.png" data-resource-id="carousel1">
-  <meta name="ext-resource-dependency" content="./assets/camisa.jpg" data-resource-id="carousel2">
-  <meta name="ext-resource-dependency" content="https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=800&q=80&auto=format&fit=crop" data-resource-id="carousel3">
-  <meta name="ext-resource-dependency" content="https://images.unsplash.com/photo-1592078615290-033ee584e267?w=800&q=80&auto=format&fit=crop" data-resource-id="carousel4">
-  <meta name="ext-resource-dependency" content="https://images.unsplash.com/photo-1521369909029-2afed882baee?w=800&q=80&auto=format&fit=crop" data-resource-id="carousel5">
-  <meta name="ext-resource-dependency" content="https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=800&q=80&auto=format&fit=crop" data-resource-id="carousel6">
-  <template id="__bundler_thumbnail" data-bg-color="#F8FBFC">
-    <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
-      <rect width="1200" height="800" fill="#F8FBFC"/>
-      <g transform="translate(600 400)">
-        <ellipse cx="0" cy="160" rx="180" ry="24" fill="#E8F4F8"/>
-        <path d="M -140 -180 L -140 140 Q -140 180 -100 180 L 100 180 Q 140 180 140 140 L 140 -180 Z" fill="#fff" stroke="#0000FF" stroke-width="6"/>
-        <path d="M 140 -120 Q 220 -120 220 -40 Q 220 40 140 40" fill="none" stroke="#0000FF" stroke-width="6"/>
-        <text x="0" y="20" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="56" fill="#0000FF">feito</text>
-        <text x="0" y="80" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="56" fill="#0000FF">em casa</text>
-      </g>
-    </svg>
-  </template>
-  <link rel="stylesheet" href="./styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- ============================================================ -->
+<!-- PERFORMANCE: preload das imagens críticas do hero (above-fold) -->
+<!-- ============================================================ -->
+<link rel="preload" as="image" href="uploads/assets hero - globo e mundo feliz.png" fetchpriority="high">
+<link rel="preload" as="image" href="uploads/estilo (3).png">
+
+<style>
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #0a2540;
+    overflow-x: hidden;
+    /* Céu natural de dia: azul vibrante no topo desvanecendo para tons mais claros */
+    background:
+      linear-gradient(180deg,
+        #1ea7ff 0%,
+        #3bb6ff 25%,
+        #6cc8ff 50%,
+        #9fdcff 75%,
+        #cfecff 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+  * { box-sizing: border-box; }
+  img { display: block; user-select: none; -webkit-user-drag: none; pointer-events: none; }
+  .parallax { will-change: transform; transform: translate3d(0,0,0); }
+  @media (prefers-reduced-motion: reduce) {
+    .parallax { transform: none !important; }
+  }
+
+  /* ============================================================
+     REVIEWS (Google Maps style) — desktop default
+     ============================================================ */
+  .reviews-section {
+    position: relative;
+    z-index: 5;
+    width: 100%;
+    max-width: 1100px;
+    margin: 80px auto 0;
+    padding: 0 24px;
+  }
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .review-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 14px 34px rgba(0,30,80,0.18);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .review-head { display: flex; align-items: center; gap: 12px; }
+  .review-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, #4285F4, #34A853);
+    color: #fff; font-weight: 700; font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    flex: none;
+  }
+  .review-name { font-weight: 600; color: #0a2540; font-size: 15px; line-height: 1.2; }
+  .review-meta { font-size: 12px; color: #5f6368; margin-top: 2px; }
+  .review-stars { color: #fbbc04; font-size: 16px; letter-spacing: 1px; }
+  .review-text { color: #202124; font-size: 14px; line-height: 1.55; margin: 0; }
+
+  /* ============================================================
+     CARROSSEL DO CATÁLOGO — desktop default
+     Snap-scroll horizontal com setas de navegação.
+     ============================================================ */
+  .carousel-wrapper { position: relative; max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+  .carousel {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding: 8px 4px 28px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.6) transparent;
+  }
+  .carousel::-webkit-scrollbar { height: 8px; }
+  .carousel::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.6); border-radius: 999px; }
+  .carousel-item {
+    flex: 0 0 320px;
+    scroll-snap-align: start;
+    position: relative;
+    aspect-ratio: 4/5;
+    overflow: hidden;
+    border-radius: 22px;
+    box-shadow: 0 18px 44px rgba(0,30,80,0.26);
+    transition: transform .35s ease, box-shadow .35s ease;
+  }
+  .carousel-item:hover { transform: translateY(-6px); box-shadow: 0 26px 58px rgba(0,30,80,0.34); }
+  .carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: #fff;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 8px 22px rgba(0,30,80,0.22);
+    font-size: 22px;
+    color: #0a2540;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform .2s ease;
+  }
+  .carousel-btn:hover { transform: translateY(-50%) scale(1.08); }
+  .carousel-prev { left: -8px; }
+  .carousel-next { right: -8px; }
+
+  /* ============================================================
+     ============== AJUSTES SOMENTE MOBILE ======================
+     Tudo abaixo afeta APENAS telas <= 768px (mobile).
+     Nada do desktop é alterado.
+     ============================================================ */
+  @media (max-width: 768px) {
+
+    /* --- 1) HERO PRINCIPAL: globo BEM maior e CENTRALIZADO ---
+       O pai já é `display:flex; align-items:center`, então basta
+       zerar a margin inline e ele se centraliza sozinho mesmo
+       sendo wider que a viewport (estoura igual nos dois lados).
+       NÃO usar left:50% + translateX(-50%) aqui — causa dupla
+       centralização e joga o globo pra esquerda. */
+    #hero .hero-logo {
+      width: 130vw !important;
+      max-width: none !important;
+      margin: 0 !important;
+    }
+
+    /* --- 2) CATÁLOGO: crianças PEQUENAS, UMA EM CADA CANTO ---
+       Antes elas tinham ~1200px de altura e ficavam sobrepostas
+       no centro. Agora ficam compactas, presas em cada borda,
+       sem se cruzarem no meio da tela. */
+    #catalogo .kid-boy {
+      height: 280px !important;
+      left: -30px !important;            /* canto esquerdo */
+      top: 30px !important;
+    }
+    #catalogo .kid-girl {
+      height: 280px !important;
+      right: -30px !important;           /* canto direito */
+      top: 30px !important;
+    }
+    /* desliga a flutuação senoidal pra evitar invasão lateral */
+    #catalogo .kid-boy,
+    #catalogo .kid-girl { animation: none; }
+
+    /* respiro extra no topo do catálogo */
+    #catalogo { padding-top: 80px; }
+
+    /* --- 3) REVIEWS: cards em coluna única no mobile -------- */
+    .reviews-grid { grid-template-columns: 1fr; gap: 14px; }
+    .reviews-section { margin-top: 56px; }
+
+    /* --- 4) CARROSSEL: VERTICAL no mobile, sem setas --------
+       Em vez de rolar lateral (que apertava o texto), os cards
+       agora empilham em coluna e ficam BEM maiores e legíveis. */
+    .carousel {
+      flex-direction: column;
+      overflow-x: visible;
+      overflow-y: visible;
+      scroll-snap-type: none;
+      gap: 20px;
+      padding: 8px 0;
+    }
+    .carousel-item {
+      flex: 0 0 auto;
+      width: 100%;
+      aspect-ratio: 4/4.2;      /* card menos "alto" no mobile, mais quadrado */
+      max-width: 100%;
+    }
+    .carousel-btn { display: none; }
+    .carousel-wrapper { padding: 0 20px; }
+  }
+</style>
 </helmet>
 
-<div style="background: #FFFFFF; color: #1a2733; min-height: 100vh; overflow-x: hidden;">
+<main style="position:relative; width:100%; overflow:hidden;">
 
-  <!-- NAV -->
-  <nav class="fc-nav" style="position: fixed; top: 0; left: 0; right: 0; z-index: 50; padding: 22px 48px; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.55); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(184, 229, 240, 0.3);">
-    <a href="#hero-top" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit;">
-      <img src="./assets/logo.png" alt="feito em casa" width="44" height="44" style="display: block; width: 44px; height: 44px; object-fit: contain;"/>
-    </a>
-    <div class="fc-nav-links" style="display: flex; gap: 32px; font-size: 13px; font-weight: 400; letter-spacing: 0.04em; text-transform: uppercase; color: #5a6b78;">
-      <a href="#produtos" class="fc-link" style="text-decoration: none; color: inherit; transition: color .2s;">Produtos</a>
-      <a href="#sobre" class="fc-link" style="text-decoration: none; color: inherit; transition: color .2s;">Sobre</a>
-      <a href="#contato" class="fc-link" style="text-decoration: none; color: inherit; transition: color .2s;">Contato</a>
+  <!-- ============================================== -->
+  <!-- 1. HERO PRINCIPAL                              -->
+  <!-- ============================================== -->
+  <section id="hero" style="position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:80px 24px; overflow:hidden;">
+
+    <!-- bolinhas atrás do logo (parallax: sobem na rolagem) -->
+    <img class="parallax" data-speed="-0.55" data-scale="1.05" src="uploads/estilo (3).png" alt=""
+      fetchpriority="high" decoding="async"
+      style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0.95; z-index:1;">
+
+    <!-- logo central -->
+    <div style="position:relative; z-index:3; text-align:center; width:100%; max-width:1220px; display:flex; flex-direction:column; align-items:center;">
+      <img class="hero-logo" src="uploads/assets hero - globo e mundo feliz.png" alt="Mundo Feliz - Locações de Brinquedos"
+        fetchpriority="high" decoding="async"
+        style="width:min(98vw, 1180px); height:auto; display:block; margin:0 auto; filter: drop-shadow(0 24px 50px rgba(0, 30, 80, 0.28));">
+      <div style="margin-top:24px; display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+        <a href="#catalogo" style="display:inline-block; background:#ffffff; color:#0a2540; text-decoration:none; padding:16px 32px; border-radius:999px; font-weight:600; font-size:16px; box-shadow:0 12px 30px rgba(0,30,80,0.18); transition:transform .2s ease;"
+          style-hover="transform: translateY(-2px);">Ver Brinquedos</a>
+        <a href="#contato" style="display:inline-block; background:transparent; color:#ffffff; text-decoration:none; padding:16px 32px; border-radius:999px; font-weight:600; font-size:16px; border:2px solid rgba(255,255,255,0.7); transition:background .2s ease;"
+          style-hover="background: rgba(255,255,255,0.15);">Falar no WhatsApp</a>
+      </div>
     </div>
-  </nav>
 
-  <!-- FIXED 3D STAGE — sits behind hero panels for the entire journey -->
-  <div id="fc-stage" style="position: fixed; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(180deg, #FFFFFF 0%, #F4FAFC 60%, #E8F4F8 100%); transition: opacity .4s ease;">
-    <canvas ref="{{ mugCanvas }}" style="width: 100%; height: 100%; display: block;"></canvas>
-    <!-- subtle radial glow that follows mug -->
-    <div ref="{{ glowRef }}" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 620px; height: 620px; border-radius: 50%; background: radial-gradient(circle, rgba(184,229,240,0.55) 0%, rgba(184,229,240,0) 70%); pointer-events: none; transition: left .9s cubic-bezier(.4,1.4,.5,1), top .9s cubic-bezier(.4,1.4,.5,1);"></div>
-  </div>
-
-  <!-- HERO JOURNEY — 4 panels, scroll moves mug between them -->
-  <div id="hero-top"></div>
-  <div id="fc-journey" style="position: relative; z-index: 2;">
-
-    <sc-for list="{{ panels }}" as="p" hint-placeholder-count="4">
-      <section data-panel-index="{{ p.index }}" class="fc-panel fc-panel-{{ p.side }} fc-pad" style="position: relative; height: 100vh; min-height: 620px; display: flex; align-items: center; padding: 100px 64px;">
-        <div class="fc-panel-inner fc-panel-text" style="max-width: 460px; {{ p.alignStyle }}">
-          <div style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border: 1px solid #B8E5F0; border-radius: 999px; background: rgba(255,255,255,0.7); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #0000FF; margin-bottom: 22px;">
-            <span style="width: 6px; height: 6px; background: #0000FF; border-radius: 50%;"></span>
-            {{ p.eyebrow }}
-          </div>
-          <h1 class="fc-hero-title" dangerouslySetInnerHTML="{{ p.titleHTML }}" style="font-family: 'Fraunces', serif; font-weight: 300; font-size: 64px; line-height: 1.04; letter-spacing: -0.025em; margin: 0 0 22px; color: #1a2733;"></h1>
-          <p style="font-size: 16px; line-height: 1.65; color: #5a6b78; max-width: 420px; margin: 0 0 32px; font-weight: 300;">{{ p.desc }}</p>
-          <sc-if value="{{ p.showCTA }}" hint-placeholder-val="{{ false }}">
-            <a href="https://wa.me/5531990752060?text=Olá!%20Gostaria%20de%20encomendar%20uma%20caneca%20personalizada." target="_blank" rel="noopener" class="fc-cta" style="display: inline-flex; align-items: center; gap: 12px; padding: 16px 40px; background: #0000FF; color: #fff; text-decoration: none; font-size: 14px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 999px; transition: all .3s ease; box-shadow: 0 12px 30px -10px rgba(0, 0, 255, 0.6);">
-              Começar
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-            </a>
-          </sc-if>
-        </div>
-      </section>
-    </sc-for>
-
-    <!-- Progress rail (right side) -->
-    <div class="fc-progress" style="position: fixed; right: 32px; top: 50%; transform: translateY(-50%); z-index: 12; display: flex; flex-direction: column; gap: 14px;">
-      <sc-for list="{{ progressDots }}" as="d" hint-placeholder-count="4">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <span style="font-size: 10px; letter-spacing: 0.16em; color: {{ d.color }}; font-weight: 500; min-width: 24px; text-align: right; transition: color .4s;">{{ d.num }}</span>
-          <div style="width: 28px; height: 1px; background: {{ d.barColor }}; transition: background .4s;"></div>
-        </div>
-      </sc-for>
+    <!-- scroll cue -->
+    <div style="position:absolute; bottom:24px; left:50%; transform:translateX(-50%); z-index:5; color:#ffffff; font-size:12px; letter-spacing:0.3em; opacity:0.85; text-transform:uppercase;">
+      role para baixo ↓
     </div>
-  </div>
+  </section>
 
-  <!-- PRODUTOS — 3D carousel hero -->
-  <section id="produtos" class="fc-pad" style="position: relative; z-index: 3; min-height: 100vh; padding: 130px 24px 90px; background: linear-gradient(180deg, #FFFFFF 0%, #F4FAFC 50%, #FFFFFF 100%); overflow: hidden; display: flex; flex-direction: column;">
+  <!-- ============================================== -->
+  <!-- 2. SEÇÃO DE CATÁLOGO                           -->
+  <!-- ============================================== -->
+  <section id="catalogo" style="position:relative; padding:120px 24px 80px; overflow:visible;">
 
-    <div class="fc-reveal" style="text-align: center; max-width: 720px; margin: 0 auto 30px;">
-      <div style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #0000FF; margin-bottom: 16px;">— O que fazemos</div>
-      <h2 class="fc-section-title" style="font-family: 'Fraunces', serif; font-weight: 300; font-size: 52px; letter-spacing: -0.02em; line-height: 1.08; margin: 0 0 18px;">
-        A caneca é só o começo.
+    <!-- crianças pulando — GRANDES, unindo as seções: braços sobem para o fim do
+         hero e pernas invadem a última seção (overflow visível + altura grande) -->
+    <img class="parallax kid-boy" data-speed="-0.16" data-float="1" src="uploads/kid-boy.png" alt="Menino pulando feliz"
+      loading="lazy" decoding="async"
+      style="position:absolute; left:max(-44vw, -720px); top:-120px; height:clamp(1120px, 134vh, 1340px); width:auto; z-index:1; filter:drop-shadow(0 22px 30px rgba(0,30,80,0.22)); pointer-events:none;">
+    <img class="parallax kid-girl" data-speed="-0.22" data-float="1" src="uploads/kid-girl.png" alt="Menina pulando feliz"
+      loading="lazy" decoding="async"
+      style="position:absolute; right:max(-44vw, -720px); top:-90px; height:clamp(1160px, 138vh, 1380px); width:auto; z-index:1; filter:drop-shadow(0 22px 30px rgba(0,30,80,0.22)); pointer-events:none;">
+
+    <div style="position:relative; z-index:3; max-width:1200px; margin:0 auto;">
+
+      <div style="text-align:center; margin-bottom:64px;">
+        <span style="display:inline-block; background:rgba(255,255,255,0.55); backdrop-filter:blur(6px); color:#0a2540; padding:6px 16px; border-radius:999px; font-size:12px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase;">Catálogo</span>
+        <h2 style="margin:20px 0 12px; font-family:'Fraunces', serif; font-weight:700; font-style:italic; font-size:clamp(40px, 6vw, 72px); color:#ffffff; line-height:1.05; text-shadow:0 6px 20px rgba(0,30,80,0.22);">
+          Brinquedos que fazem<br>a festa acontecer
+        </h2>
+        <p style="margin:0 auto; max-width:580px; color:#0a2540; opacity:0.85; font-size:18px; line-height:1.55;">
+          Aluguel completo com entrega, montagem e retirada. Brinquedos higienizados e prontos para diversão.
+        </p>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- CARROSSEL DE PRODUTOS                                         -->
+      <!-- Desktop: rola lateral com snap + setas. Mobile: empilha.      -->
+      <!-- ============================================================ -->
+      <div class="carousel-wrapper">
+        <button class="carousel-btn carousel-prev" aria-label="Anterior" type="button">‹</button>
+        <button class="carousel-btn carousel-next" aria-label="Próximo" type="button">›</button>
+        <div class="carousel" id="catalogo-carrossel">
+          <sc-for list="{{ toys }}" as="t" hint-placeholder-count="5">
+            <article class="carousel-item">
+              <!-- fundo (gradiente placeholder caso não tenha imagem) -->
+              <div style="position:absolute; inset:0; background: {{ t.bg || '#0a2540' }};"></div>
+              <img src="{{ t.img }}" alt="{{ t.name }}" loading="lazy" decoding="async"
+                onerror="this.style.display='none'"
+                style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;">
+              <!-- fade preto p/ legibilidade do texto -->
+              <div style="position:absolute; left:0; right:0; bottom:0; height:62%; background:linear-gradient(180deg, rgba(8,16,30,0) 0%, rgba(8,16,30,0.55) 55%, rgba(8,16,30,0.88) 100%);"></div>
+              <div style="position:absolute; left:0; right:0; bottom:0; padding:24px; display:flex; align-items:flex-end; justify-content:space-between; gap:14px;">
+                <h3 style="margin:0; font-family:'Fraunces', serif; font-weight:600; font-size:24px; line-height:1.15; color:#ffffff;">{{ t.name }}</h3>
+                <span style="flex:none; font-family:'Inter',sans-serif; font-weight:700; font-size:16px; color:#ffffff; background:rgba(255,255,255,0.18); backdrop-filter:blur(4px); padding:7px 12px; border-radius:999px; white-space:nowrap;">{{ t.price }}</span>
+              </div>
+            </article>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 3. ÚLTIMO HERO / CONTATO                       -->
+  <!-- ============================================== -->
+  <section id="contato" style="position:relative; min-height:100vh; padding:120px 0 0; overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:flex-start;">
+
+    <!-- ============================================== -->
+    <!-- CANECA — asset decorativo com parallax        -->
+    <!-- Sobe lentamente conforme o usuário rola.      -->
+    <!-- Z-index baixo para ficar atrás do conteúdo.   -->
+    <!-- ============================================== -->
+    <img class="parallax" data-speed="-0.45" data-float="1" src="uploads/asset-caneca-transparente.png" alt=""
+      loading="lazy" decoding="async"
+      style="position:absolute; right:-8%; top:8%; width:min(72vw, 760px); height:auto; z-index:2; opacity:0.88; pointer-events:none; filter: drop-shadow(0 18px 38px rgba(0,30,80,0.22));">
+
+    <!-- bolinhas voando — sobem só perto do FINAL da página (speed positivo:
+         entram baixas/escondidas e só se elevam ao chegar no fim) -->
+    <img class="parallax" data-speed="0.75" data-scale="1.10" src="uploads/estilo (1).png" alt=""
+      loading="lazy" decoding="async"
+      style="position:absolute; left:0; bottom:0; width:100%; height:auto; z-index:4; opacity:0.95; pointer-events:none;">
+
+    <div style="position:relative; z-index:5; max-width:780px; text-align:center; padding:40px 24px 0;">
+      <span style="display:inline-block; background:#fff; color:#0a2540; padding:6px 16px; border-radius:999px; font-size:12px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase;">Reserve agora</span>
+      <h2 style="margin:20px 0 16px; font-family:'Fraunces', serif; font-weight:800; font-style:italic; font-size:clamp(44px, 7vw, 88px); color:#ffffff; line-height:1.0; text-shadow:0 8px 24px rgba(0,30,80,0.25);">
+        Vamos fazer a sua festa virar lembrança?
       </h2>
-      <p style="font-size: 16px; line-height: 1.6; color: #5a6b78; max-width: 540px; margin: 0 auto; font-weight: 300;">
-        Canecas, camisetas e garrafas esportivas — sua arte ganha forma no nosso ateliê. Arraste, gire, escolha o seu.
+      <p style="margin:0 auto 36px; max-width:560px; color:#ffffff; opacity:0.95; font-size:18px; line-height:1.55;">
+        Atendimento rápido pelo WhatsApp. Orçamento na hora, datas em tempo real e tudo prontinho para o grande dia.
+      </p>
+
+      <!-- CTA WhatsApp -->
+      <a href="https://wa.me/5511999999999?text=Ol%C3%A1!%20Quero%20um%20or%C3%A7amento%20para%20locar%20brinquedos%20com%20a%20Mundo%20Feliz."
+        target="_blank" rel="noopener"
+        style="display:inline-flex; align-items:center; gap:14px; background:#25D366; color:#ffffff; text-decoration:none; padding:22px 40px; border-radius:999px; font-weight:700; font-size:22px; box-shadow:0 20px 50px rgba(37,211,102,0.45); transition:transform .25s ease, box-shadow .25s ease;"
+        style-hover="transform: translateY(-3px); box-shadow: 0 28px 60px rgba(37,211,102,0.55);">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zM18.062 14.382c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+        </svg>
+        Falar no WhatsApp
+      </a>
+
+      <p style="margin-top:24px; color:#ffffff; font-size:14px; opacity:0.85;">
+        ou ligue: <strong>(11) 99999-9999</strong>
       </p>
     </div>
 
-    <!-- 3D Coverflow stage -->
-    <div class="fc-carousel" style="position: relative; flex: 1; min-height: 440px; perspective: 1600px; perspective-origin: 50% 45%; user-select: none;" onMouseDown="{{ onCarouselDragStart }}" onTouchStart="{{ onCarouselDragStart }}">
-      <div class="fc-carousel-track" style="position: absolute; inset: 0; transform-style: preserve-3d;">
-        <sc-for list="{{ carouselItems }}" as="c" hint-placeholder-count="3">
-          <div class="fc-card3d" onClick="{{ c.onClick }}" style="position: absolute; top: 50%; left: 50%; width: 280px; height: 360px; margin-left: -140px; margin-top: -180px; transform-style: preserve-3d; transform: {{ c.transform }}; opacity: {{ c.opacity }}; z-index: {{ c.z }}; transition: transform .8s cubic-bezier(.22,.9,.25,1), opacity .6s ease; cursor: pointer; pointer-events: {{ c.pointerEvents }};">
-            <div style="position: absolute; inset: 0; background: #FFFFFF; border-radius: 20px; box-shadow: 0 30px 60px -20px rgba(0, 0, 255, 0.35), 0 8px 20px -10px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid #E8F4F8;">
-              <div style="position: relative; height: 240px; overflow: hidden; background: linear-gradient(135deg, #F4FAFC, #E8F4F8);">
-                <sc-if value="{{ c.image }}" hint-placeholder-val="{{ false }}"><img src="{{ c.image }}" alt="{{ c.title }}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block;"/></sc-if>
-                <div style="position: absolute; top: 14px; left: 14px; padding: 5px 10px; background: rgba(255,255,255,0.92); border-radius: 999px; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #0000FF; font-weight: 500;">{{ c.tag }}</div>
-              </div>
-              <div style="padding: 22px 22px 18px;">
-                <h3 style="font-family: 'Fraunces', serif; font-weight: 400; font-size: 20px; margin: 0 0 6px; letter-spacing: -0.01em;">{{ c.title }}</h3>
-                <p style="font-size: 13px; line-height: 1.45; color: #7a8b98; margin: 0; font-weight: 300;">{{ c.desc }}</p>
-              </div>
+    <!-- ============================================== -->
+    <!-- 3.1 AVALIAÇÕES (estilo Google Maps - fake)     -->
+    <!-- ============================================== -->
+    <section class="reviews-section" aria-label="Avaliações de clientes">
+      <div style="text-align:center; margin-bottom:28px;">
+        <div style="display:inline-flex; align-items:center; gap:10px; background:#fff; padding:10px 18px; border-radius:999px; box-shadow:0 10px 24px rgba(0,30,80,0.16);">
+          <!-- Google "G" colorido -->
+          <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true">
+            <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.1 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.3-.4-3.5z"/>
+            <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 13 24 13c3 0 5.8 1.1 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
+            <path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35 26.7 36 24 36c-5.3 0-9.7-3.1-11.3-7.5l-6.5 5C9.5 39.6 16.2 44 24 44z"/>
+            <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.1 5.6l6.2 5.2c-.4.4 6.6-4.8 6.6-14.8 0-1.3-.1-2.3-.4-3.5z"/>
+          </svg>
+          <strong style="font-size:14px; color:#0a2540;">4,9</strong>
+          <span style="color:#fbbc04; letter-spacing:1px;">★★★★★</span>
+          <span style="font-size:12px; color:#5f6368;">· 127 avaliações no Google</span>
+        </div>
+        <h3 style="margin:18px 0 0; font-family:'Fraunces', serif; font-style:italic; font-weight:700; font-size:clamp(28px, 4vw, 40px); color:#ffffff; text-shadow:0 4px 14px rgba(0,30,80,0.22);">
+          O que dizem os clientes
+        </h3>
+      </div>
+
+      <div class="reviews-grid">
+        <article class="review-card">
+          <div class="review-head">
+            <div class="review-avatar" style="background:linear-gradient(135deg,#EA4335,#FBBC04);">M</div>
+            <div>
+              <div class="review-name">Mariana Silva</div>
+              <div class="review-meta">Local Guide · há 2 semanas</div>
             </div>
           </div>
-        </sc-for>
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">Aluguei a piscina de bolinhas para o aniversário do meu filho. Brinquedo limpíssimo, montagem rapidíssima e a equipe foi super atenciosa. As crianças amaram, recomendo demais!</p>
+        </article>
+
+        <article class="review-card">
+          <div class="review-head">
+            <div class="review-avatar" style="background:linear-gradient(135deg,#4285F4,#34A853);">R</div>
+            <div>
+              <div class="review-name">Rafael Mendes</div>
+              <div class="review-meta">há 1 mês</div>
+            </div>
+          </div>
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">O barco pirata foi o sucesso da festa! Entregaram no horário combinado, tudo higienizado e em ótimo estado. Atendimento no WhatsApp foi excelente, tirou todas as minhas dúvidas.</p>
+        </article>
+
+        <article class="review-card">
+          <div class="review-head">
+            <div class="review-avatar" style="background:linear-gradient(135deg,#34A853,#4285F4);">C</div>
+            <div>
+              <div class="review-name">Camila Rocha</div>
+              <div class="review-meta">Local Guide · há 3 semanas</div>
+            </div>
+          </div>
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">Já é a terceira vez que loco com a Mundo Feliz. Preço justo, brinquedos sempre novos e a retirada é tranquila. Virou a empresa oficial das festas lá de casa 🎉</p>
+        </article>
       </div>
-    </div>
+    </section>
 
-    <!-- Carousel controls -->
-    <div style="display: flex; align-items: center; justify-content: center; gap: 24px; margin-top: 28px;">
-      <button onClick="{{ onCarouselPrev }}" aria-label="Anterior" style="width: 48px; height: 48px; border-radius: 50%; border: 1px solid #B8E5F0; background: #FFFFFF; color: #0000FF; cursor: pointer; display: grid; place-items: center; transition: all .25s ease;" class="fc-carousel-btn">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
+    <!-- piscina de bolinhas no rodapé — ocupa 100% da largura -->
+    <img src="uploads/assets psicina de bolinha.png" alt=""
+      loading="lazy" decoding="async"
+      style="position:relative; z-index:2; margin-top:auto; width:100%; height:auto; display:block;">
 
-      <div style="display: flex; gap: 10px; align-items: center;">
-        <sc-for list="{{ carouselDots }}" as="d" hint-placeholder-count="3">
-          <button onClick="{{ d.onClick }}" aria-label="Ir para item {{ d.label }}" style="width: {{ d.w }}; height: 6px; border-radius: 999px; border: 0; padding: 0; background: {{ d.bg }}; cursor: pointer; transition: all .35s ease;"></button>
-        </sc-for>
-      </div>
-
-      <button onClick="{{ onCarouselNext }}" aria-label="Próximo" style="width: 48px; height: 48px; border-radius: 50%; border: 1px solid #B8E5F0; background: #FFFFFF; color: #0000FF; cursor: pointer; display: grid; place-items: center; transition: all .25s ease;" class="fc-carousel-btn">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 6l6 6-6 6"/></svg>
-      </button>
-    </div>
-
-    <div style="text-align: center; margin-top: 14px; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #7AA3B8;">arraste · clique · gire</div>
+    <footer style="position:relative; z-index:3; width:100%; padding:24px; text-align:center; color:#0a2540; font-size:13px; background:rgba(255,255,255,0.0);">
+      © Mundo Feliz · Locações de Brinquedos
+    </footer>
   </section>
 
-  <!-- SOBRE -->
-  <section id="sobre" class="fc-pad" style="position: relative; z-index: 3; padding: 140px 64px; background: #FFFFFF;">
-    <div style="max-width: 1100px; margin: 0 auto;">
-      <div class="fc-reveal" style="text-align: center; margin-bottom: 80px;">
-        <div style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #0000FF; margin-bottom: 16px;">— Sobre</div>
-        <h2 class="fc-section-title" style="font-family: 'Fraunces', serif; font-weight: 300; font-size: 52px; letter-spacing: -0.02em; line-height: 1.1; margin: 0 0 28px;">
-          Pequenas peças,<br>grandes histórias.
-        </h2>
-        <p style="font-size: 16px; line-height: 1.7; color: #5a6b78; max-width: 580px; margin: 0 auto; font-weight: 300;">
-          A <strong style="color: #1a2733; font-weight: 500;">feito em casa</strong> nasceu de uma cozinha e de muito café. Hoje, transformamos memórias, ilustrações e frases favoritas em canecas únicas — produzidas em pequenos lotes, com cuidado de quem ama o que faz.
-        </p>
-      </div>
+</main>
 
-      <div class="fc-cards" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
-        <sc-for list="{{ features }}" as="f" hint-placeholder-count="3">
-          <div class="fc-reveal fc-card" style="background: #FFFFFF; border: 1px solid #E8F4F8; border-radius: 20px; padding: 40px 32px; transition: transform .4s ease, box-shadow .4s ease;">
-            <div style="width: 56px; height: 56px; border-radius: 50%; background: #E8F4F8; display: grid; place-items: center; margin-bottom: 28px; color: #0000FF;" dangerouslySetInnerHTML="{{ f.iconHTML }}"></div>
-            <h3 style="font-family: 'Fraunces', serif; font-weight: 400; font-size: 22px; margin: 0 0 12px; letter-spacing: -0.01em;">{{ f.title }}</h3>
-            <p style="font-size: 14px; line-height: 1.65; color: #5a6b78; margin: 0; font-weight: 300;">{{ f.desc }}</p>
-          </div>
-        </sc-for>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTATO -->
-  <section id="contato" class="fc-pad" style="position: relative; z-index: 3; padding: 140px 64px; background: linear-gradient(180deg, #FFFFFF 0%, #F4FAFC 100%);">
-    <div style="max-width: 860px; margin: 0 auto;">
-      <div class="fc-reveal" style="text-align: center; margin-bottom: 64px;">
-        <div style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #0000FF; margin-bottom: 16px;">— Contato</div>
-        <h2 class="fc-section-title" style="font-family: 'Fraunces', serif; font-weight: 300; font-size: 52px; letter-spacing: -0.02em; line-height: 1.1; margin: 0 0 20px;">Fale conosco.</h2>
-        <p style="font-size: 16px; line-height: 1.6; color: #5a6b78; max-width: 480px; margin: 0 auto; font-weight: 300;">
-          Conte-nos sua ideia. Respondemos em até 24h com um orçamento personalizado.
-        </p>
-      </div>
-
-      <form class="fc-reveal" onSubmit="{{ onSubmit }}" style="background: #FFFFFF; border: 1px solid #E8F4F8; border-radius: 24px; padding: 48px; box-shadow: 0 30px 80px -40px rgba(0, 0, 255, 0.25);">
-        <div class="fc-form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-          <div>
-            <label style="display: block; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #7a8b98; margin-bottom: 10px;">Nome</label>
-            <input class="fc-input" type="text" name="name" value="{{ formData.name }}" onChange="{{ onChange }}" placeholder="Seu nome" style="width: 100%; padding: 14px 16px; border: 1px solid #E8F4F8; border-radius: 12px; font-family: inherit; font-size: 15px; background: #F8FBFC; transition: all .2s; color: #1a2733;"/>
-          </div>
-          <div>
-            <label style="display: block; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #7a8b98; margin-bottom: 10px;">Email</label>
-            <input class="fc-input" type="email" name="email" value="{{ formData.email }}" onChange="{{ onChange }}" placeholder="seu@email.com" style="width: 100%; padding: 14px 16px; border: 1px solid #E8F4F8; border-radius: 12px; font-family: inherit; font-size: 15px; background: #F8FBFC; transition: all .2s; color: #1a2733;"/>
-          </div>
-        </div>
-        <div style="margin-bottom: 24px;">
-          <label style="display: block; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #7a8b98; margin-bottom: 10px;">Mensagem</label>
-          <textarea class="fc-input" name="message" value="{{ formData.message }}" onChange="{{ onChange }}" placeholder="Conte-nos sua ideia, quantidade, prazo..." rows="5" style="width: 100%; padding: 14px 16px; border: 1px solid #E8F4F8; border-radius: 12px; font-family: inherit; font-size: 15px; background: #F8FBFC; transition: all .2s; resize: vertical; color: #1a2733;"></textarea>
-        </div>
-
-        <sc-if value="{{ formError }}" hint-placeholder-val="{{ false }}">
-          <div style="padding: 12px 16px; background: #FFF4F4; border: 1px solid #FFDADA; border-radius: 10px; color: #B85454; font-size: 13px; margin-bottom: 20px;">{{ formError }}</div>
-        </sc-if>
-
-        <sc-if value="{{ formSuccess }}" hint-placeholder-val="{{ false }}">
-          <div style="padding: 16px 20px; background: #E8F4F8; border: 1px solid #B8E5F0; border-radius: 10px; color: #0000CC; font-size: 14px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            <span>Mensagem enviada! Em breve entraremos em contato.</span>
-          </div>
-        </sc-if>
-
-        <button type="submit" class="fc-submit" disabled="{{ formSending }}" style="width: 100%; padding: 16px; background: #0000FF; color: #fff; border: none; border-radius: 12px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; transition: background .3s ease; opacity: {{ submitOpacity }};">
-          {{ submitLabel }}
-        </button>
-      </form>
-
-      <div style="text-align: center; margin-top: 56px; font-size: 13px; color: #7a8b98; font-weight: 300;">
-        Ou nos encontre em <a href="#" class="fc-link" style="color: #0000FF; text-decoration: none; transition: color .2s;">@feitoemcasa</a> · Entregamos para todo o Brasil
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer style="position: relative; z-index: 3; padding: 40px 48px; background: #FFFFFF; border-top: 1px solid #E8F4F8; text-align: center; font-size: 12px; color: #7a8b98; font-weight: 300; letter-spacing: 0.04em;">
-    © 2026 feito em casa · canecas feitas com carinho
-  </footer>
-
-  <!-- WHATSAPP FLOAT -->
-  <a href="https://wa.me/5531990752060?text=Olá!%20Gostaria%20de%20mais%20informações" target="_blank" rel="noopener" class="fc-wa" style="position: fixed; right: 28px; bottom: 28px; z-index: 100; display: inline-flex; align-items: center; gap: 10px; padding: 14px 20px; background: #0000FF; color: #fff; text-decoration: none; font-size: 14px; font-weight: 500; border-radius: 999px; box-shadow: 0 8px 24px rgba(0, 0, 255, 0.35); transition: transform .3s ease; animation: fcPulse 2.6s ease-in-out infinite;">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.297-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.273.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.077 4.487.71.306 1.263.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/>
-    </svg>
-    Dúvidas?
-  </a>
-
-</div>
 </x-dc>
-<script>
-  // Bootstrap: synchronously load external script.js into a data-dc-script
-  // element so support.js processes it the same way as inline source.
-  (function () {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', './script.js', false); // synchronous, runs before DOMContentLoaded
-    xhr.send(null);
-    if (xhr.status !== 200 && xhr.status !== 0) {
-      console.error('Failed to load ./script.js:', xhr.status);
-      return;
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    // Em modo standalone, as imagens vêm de window.__resources (blob URLs).
+    const R = (typeof window !== 'undefined' && window.__resources) || {};
+    return {
+      toys: [
+        { name: 'Piscina de Bolinhas', desc: 'Mergulho de diversão colorido para os pequenos.', price: 'R$ 250/dia',
+          img: R.toy1 || 'uploads/toy1.png' },
+        { name: 'Barco Pirata', desc: 'Tobogã inflável gigante em forma de navio pirata.', price: 'R$ 480/dia',
+          img: R.toy2 || 'uploads/toy2.png' },
+        { name: 'Tenda de Bolinhas', desc: 'Tenda inflável espaçosa, perfeita para festas em casa.', price: 'R$ 380/dia',
+          img: R.toy3 || 'uploads/toy3.png' },
+        // ===== NOVOS ITENS — placeholders com gradiente até as fotos chegarem =====
+        { name: 'Azulejo Decorado', desc: 'Lembrancinha personalizada Mundo Feliz.', price: 'R$ 35',
+          img: '', bg: 'linear-gradient(135deg, #4FC3F7 0%, #0277BD 100%)' },
+        { name: 'Ecobag Mundo Feliz', desc: 'Bolsa de tecido estampada para os convidados.', price: 'R$ 45',
+          img: '', bg: 'linear-gradient(135deg, #FFB74D 0%, #E65100 100%)' }
+      ]
+    };
+  }
+
+  componentDidMount() {
+    // ============================================================
+    // CONFIGURAÇÃO DO PARALLAX
+    // Ajuste estes valores para controlar a intensidade do efeito:
+    //   data-speed   no HTML: velocidade vertical (negativo = sobe ao rolar)
+    //   data-scale   no HTML: zoom máximo ao final da rolagem
+    //   data-float   no HTML: ativa flutuação suave senoidal
+    //
+    // FLOAT_AMPLITUDE: amplitude (px) da flutuação senoidal
+    // FLOAT_SPEED:     velocidade da flutuação (rad/ms)
+    // ============================================================
+    const FLOAT_AMPLITUDE = 14;
+    const FLOAT_SPEED = 0.0008;
+
+    // Limite (px) de quanto um elemento pode se deslocar — evita que as
+    // bolinhas "voem para fora" da seção em parallax agressivo.
+    const MAX_SHIFT = 260;
+
+    const root = this.$root || document;
+    const layers = Array.from(root.querySelectorAll('.parallax'));
+    if (!layers.length) return;
+
+    // Cache dos atributos por elemento. Usamos a SEÇÃO como referência de
+    // medição (ela nunca recebe transform), evitando o loop de feedback que
+    // fazia os elementos dispararem para fora da tela.
+    const items = layers.map(el => ({
+      el,
+      ref: el.closest('section') || el.parentElement,
+      speed: parseFloat(el.dataset.speed) || 0,
+      scale: parseFloat(el.dataset.scale) || 1,
+      float: el.dataset.float === '1'
+    }));
+
+    let ticking = false;
+    let mounted = true;
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+    const apply = (t) => {
+      const vh = window.innerHeight || 1;
+      for (let i = 0; i < items.length; i++) {
+        const it = items[i];
+        const r = it.ref.getBoundingClientRect();   // referência SEM transform
+        const sectionCenter = r.top + r.height / 2;
+        const delta = sectionCenter - vh / 2;        // px, estável
+
+        // Translação do parallax (limitada p/ manter tudo visível)
+        let ty = clamp(delta * it.speed, -MAX_SHIFT, MAX_SHIFT);
+
+        // Flutuação senoidal sutil (crianças do catálogo)
+        if (it.float) {
+          ty += Math.sin(t * FLOAT_SPEED) * FLOAT_AMPLITUDE;
+        }
+
+        // Escala progressiva conforme a seção entra na viewport (0..1)
+        const enter = clamp(1 - (r.top / vh), 0, 1);
+        const sc = 1 + (it.scale - 1) * enter;
+
+        it.el.style.transform = `translate3d(0, ${ty.toFixed(2)}px, 0) scale(${sc.toFixed(3)})`;
+      }
+      ticking = false;
+      if (mounted && items.some(it => it.float)) {
+        requestAnimationFrame(apply); // loop contínuo p/ flutuação
+      }
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(apply);
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    requestAnimationFrame(apply); // primeiro frame
+
+    this._cleanupParallax = () => {
+      mounted = false;
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+
+    // ============================================================
+    // NAVEGAÇÃO DO CARROSSEL DE CATÁLOGO (setas prev/next)
+    // No mobile as setas são ocultadas via CSS, então o listener
+    // simplesmente não dispara — o usuário rola empilhado.
+    // ============================================================
+    const carousel = root.querySelector('#catalogo-carrossel');
+    const btnPrev = root.querySelector('.carousel-prev');
+    const btnNext = root.querySelector('.carousel-next');
+    if (carousel && btnPrev && btnNext) {
+      const getStep = () => {
+        const item = carousel.querySelector('.carousel-item');
+        if (!item) return 320;
+        const gap = parseFloat(getComputedStyle(carousel).columnGap || '24') || 24;
+        return item.getBoundingClientRect().width + gap;
+      };
+      btnPrev.addEventListener('click', () => carousel.scrollBy({ left: -getStep(), behavior: 'smooth' }));
+      btnNext.addEventListener('click', () => carousel.scrollBy({ left:  getStep(), behavior: 'smooth' }));
     }
-    var s = document.createElement('script');
-    s.type = 'text/x-dc';
-    s.setAttribute('data-dc-script', '');
-    s.textContent = xhr.responseText;
-    document.currentScript.parentNode.insertBefore(s, document.currentScript);
-  })();
+  }
+
+  componentWillUnmount() {
+    if (this._cleanupParallax) this._cleanupParallax();
+  }
+}
 </script>
 </body>
 </html>
