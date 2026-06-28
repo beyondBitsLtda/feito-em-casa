@@ -40,7 +40,9 @@ html { scroll-behavior: smooth; }
       .fc-card3d { width: 86vw !important; max-width: 340px !important; height: 440px !important; margin-left: -43vw !important; margin-top: -220px !important; transform-origin: 50% 50% !important; }
       .fc-card3d > div > div:first-child { height: 280px !important; }
       .fc-interactive3d { height: 380px !important; }
-      /* Canecas parallax menores e um pouco menos opacas no mobile */
-      .fc-parallax-layer .fc-pm { width: 60vw !important; opacity: 0.42 !important; }
+      /* Canecas parallax: tamanhos menores e proporcionais no mobile */
+      .fc-parallax-layer .fc-pm[src*="superior-esquerdo"] { width: 55vw !important; }
+      .fc-parallax-layer .fc-pm[src*="superior-direito"]  { width: 45vw !important; }
+      .fc-parallax-layer .fc-pm[src*="inferior-direito"]  { width: 75vw !important; }
     }
-    .fc-pm { will-change: transform, filter; user-select: none; }
+    .fc-pm { will-change: transform; user-select: none; }
