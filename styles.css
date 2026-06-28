@@ -34,15 +34,15 @@ html { scroll-behavior: smooth; }
       .fc-panel-left .fc-panel-text, .fc-panel-right .fc-panel-text { margin: 0 auto !important; }
       .fc-progress { display: none !important; }
       .fc-nav-links { gap: 18px !important; font-size: 11px !important; }
-      /* Coverflow VERTICAL no mobile: empilha os cards de cima a baixo */
-      .fc-carousel { min-height: 760px !important; perspective: 1400px !important; perspective-origin: 50% 50% !important; }
+      /* Coverflow HORIZONTAL no mobile, mas com cards maiores/mais legíveis */
+      .fc-carousel { min-height: 520px !important; perspective: 1200px !important; }
       .fc-carousel-track { transform: none !important; }
-      .fc-card3d { width: 86vw !important; max-width: 340px !important; height: 440px !important; margin-left: -43vw !important; margin-top: -220px !important; transform-origin: 50% 50% !important; }
-      .fc-card3d > div > div:first-child { height: 280px !important; }
+      .fc-card3d { width: 78vw !important; max-width: 320px !important; height: 420px !important; margin-left: -39vw !important; margin-top: -210px !important; transform-origin: 50% 50% !important; }
+      .fc-card3d > div > div:first-child { height: 260px !important; }
       .fc-interactive3d { height: 380px !important; }
       /* Canecas parallax: tamanhos menores e proporcionais no mobile */
-      .fc-parallax-layer .fc-pm[src*="superior-esquerdo"] { width: 95vw !important; }
-      .fc-parallax-layer .fc-pm[src*="superior-direito"]  { width: 115vw !important; }
-      .fc-parallax-layer .fc-pm[src*="inferior-direito"]  { width: 150vw !important; }
+      .fc-parallax-layer .fc-pm[src*="superior-esquerdo"] { width: 130vw !important; }
+      .fc-parallax-layer .fc-pm[src*="superior-direito"]  { width: 160vw !important; }
+      .fc-parallax-layer .fc-pm[src*="inferior-direito"]  { width: 200vw !important; }
     }
     .fc-pm { will-change: transform; user-select: none; }
