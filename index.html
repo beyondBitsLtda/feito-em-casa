@@ -217,18 +217,18 @@
 
     <!-- PARALLAX FRONTAL: 3 canecas POR CIMA do form, uma em cada canto (pointer-events: none) -->
     <div class="fc-parallax-layer" aria-hidden="true" style="position: absolute; inset: 0; z-index: 5; pointer-events: none; overflow: hidden;">
-      <!-- canto superior esquerdo: a menor das três, "voando" -->
-      <img class="fc-pm" data-speed="-0.45"
+      <!-- canto superior esquerdo: a menor das três, "voando" da tela -->
+      <img class="fc-pm" data-speed="-0.5" data-pop="0.35" data-rot="-6"
            src="./assets/caneca-superior-esquerdo.png" alt=""
-           style="position: absolute; top: -4%; left: -5%; width: 700px;"/>
-      <!-- canto superior direito: média -->
-      <img class="fc-pm" data-speed="0.35"
+           style="position: absolute; top: -8%; left: -8%; width: 950px; transform-origin: 20% 20%;"/>
+      <!-- canto superior direito: média, saltando para frente -->
+      <img class="fc-pm" data-speed="0.4" data-pop="0.45" data-rot="8"
            src="./assets/caneca-superior-direito.png" alt=""
-           style="position: absolute; top: 0%; right: -4%; width: 880px;"/>
-      <!-- canto inferior direito: a MAIOR -->
-      <img class="fc-pm" data-speed="0.55"
+           style="position: absolute; top: -6%; right: -8%; width: 1200px; transform-origin: 80% 20%;"/>
+      <!-- canto inferior direito: a MAIOR, saltando bem na cara -->
+      <img class="fc-pm" data-speed="0.6" data-pop="0.6" data-rot="-5"
            src="./assets/caneca-inferior-direito.png" alt=""
-           style="position: absolute; bottom: -8%; right: -6%; width: 1240px;"/>
+           style="position: absolute; bottom: -14%; right: -10%; width: 1700px; transform-origin: 85% 85%;"/>
     </div>
   </section>
 
