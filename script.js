@@ -530,19 +530,26 @@ class Component extends DCLogic {
         }
       }
 
-      // -------- PARALLAX: 3 canecas frontais sobre a seção CONTATO --------
+      // -------- PARALLAX: 3 canecas SALTANDO sobre a seção CONTATO --------
       const contato = document.getElementById('contato');
       if (contato) {
         const cr = contato.getBoundingClientRect();
         const vh = window.innerHeight;
         const center = cr.top + cr.height / 2;
-        // Progresso normalizado: -1 (seção ainda abaixo) -> 0 (centralizada) -> 1 (já saiu)
+        // p: -1 (seção entrando por baixo) -> 0 (centralizada) -> 1 (saindo por cima)
         const p = Math.max(-1, Math.min(1, (vh / 2 - center) / ((vh + cr.height) / 2)));
+        // "Visibility": 1 quando centralizada, 0 nas extremidades — usado para o "salto" (scale).
+        const vis = 1 - Math.min(1, Math.abs(p));
         if (!this._pmugs) this._pmugs = Array.from(document.querySelectorAll('.fc-pm'));
         this._pmugs.forEach((el) => {
           const speed = parseFloat(el.dataset.speed || '0.3');
-          const ty = p * 140 * speed;
-          el.style.transform = 'translate3d(0,' + ty.toFixed(1) + 'px,0)';
+          const pop = parseFloat(el.dataset.pop || '0.4');
+          const baseRot = parseFloat(el.dataset.rot || '0');
+          const ty = p * 180 * speed;                 // translate vertical (parallax clássico)
+          const scale = 1 + vis * pop;                // CRESCE quando centralizada — sensação de salto
+          const rot = baseRot + p * 4 * Math.sign(speed); // leve giro com o scroll
+          el.style.transform =
+            'translate3d(0,' + ty.toFixed(1) + 'px,0) rotate(' + rot.toFixed(2) + 'deg) scale(' + scale.toFixed(3) + ')';
         });
       }
     };
@@ -826,27 +833,24 @@ class Component extends DCLogic {
     const total = carouselSrc.length;
     const active = this.state.carouselIndex;
     const isMobile = (typeof window !== 'undefined') && window.innerWidth <= 720;
-    // No mobile o coverflow é VERTICAL: empilha os cards no eixo Y e gira em rotateX.
-    const spreadMain = isMobile ? 230 : 260;
-    const tzStep     = isMobile ? 90  : 160;
-    const rotStep    = isMobile ? 18  : 34;
+    // Horizontal em desktop e mobile — só mudam os espaçamentos.
+    const spreadX = isMobile ? 170 : 260;
+    const tzStep  = isMobile ? 130 : 160;
+    const rotStep = isMobile ? 28  : 34;
     const carouselItems = carouselSrc.map((item, i) => {
       let rel = i - active;
       if (rel > total / 2) rel -= total;
       if (rel < -total / 2) rel += total;
       const abs = Math.abs(rel);
-      const main = rel * spreadMain;
-      const rot = -rel * rotStep;
+      const x = rel * spreadX;
+      const rotY = -rel * rotStep;
       const tz = -abs * tzStep;
       const scale = abs === 0 ? 1 : (abs === 1 ? 0.88 : 0.72);
       const opacity = abs <= 2 ? (abs === 0 ? 1 : (abs === 1 ? 0.85 : 0.35)) : 0;
       const z = 100 - abs;
-      const transform = isMobile
-        ? `translateY(${main}px) translateZ(${tz}px) rotateX(${-rot}deg) scale(${scale})`
-        : `translateX(${main}px) translateZ(${tz}px) rotateY(${rot}deg) scale(${scale})`;
       return {
         ...item,
-        transform,
+        transform: `translateX(${x}px) translateZ(${tz}px) rotateY(${rotY}deg) scale(${scale})`,
         opacity,
         z,
         pointerEvents: abs <= 2 ? 'auto' : 'none',
