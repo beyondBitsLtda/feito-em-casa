@@ -41,8 +41,8 @@ html { scroll-behavior: smooth; }
       .fc-card3d > div > div:first-child { height: 280px !important; }
       .fc-interactive3d { height: 380px !important; }
       /* Canecas parallax: tamanhos menores e proporcionais no mobile */
-      .fc-parallax-layer .fc-pm[src*="superior-esquerdo"] { width: 70vw !important; }
-      .fc-parallax-layer .fc-pm[src*="superior-direito"]  { width: 80vw !important; }
-      .fc-parallax-layer .fc-pm[src*="inferior-direito"]  { width: 110vw !important; }
+      .fc-parallax-layer .fc-pm[src*="superior-esquerdo"] { width: 95vw !important; }
+      .fc-parallax-layer .fc-pm[src*="superior-direito"]  { width: 115vw !important; }
+      .fc-parallax-layer .fc-pm[src*="inferior-direito"]  { width: 150vw !important; }
     }
     .fc-pm { will-change: transform; user-select: none; }
