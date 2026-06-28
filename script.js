@@ -530,25 +530,19 @@ class Component extends DCLogic {
         }
       }
 
-      // -------- PARALLAX: canecas frontais sobre a seção CONTATO --------
+      // -------- PARALLAX: 3 canecas frontais sobre a seção CONTATO --------
       const contato = document.getElementById('contato');
       if (contato) {
         const cr = contato.getBoundingClientRect();
         const vh = window.innerHeight;
-        // Progresso: -1 (seção ainda abaixo) -> 0 (centralizada) -> 1 (já passou pelo topo)
         const center = cr.top + cr.height / 2;
-        const norm = (vh / 2 - center) / ((vh + cr.height) / 2);
-        const p = Math.max(-1, Math.min(1, norm));
+        // Progresso normalizado: -1 (seção ainda abaixo) -> 0 (centralizada) -> 1 (já saiu)
+        const p = Math.max(-1, Math.min(1, (vh / 2 - center) / ((vh + cr.height) / 2)));
         if (!this._pmugs) this._pmugs = Array.from(document.querySelectorAll('.fc-pm'));
         this._pmugs.forEach((el) => {
           const speed = parseFloat(el.dataset.speed || '0.3');
-          const rot = parseFloat(el.dataset.rot || '0');
-          const blur = el.dataset.blur || '6';
-          const ty = p * 120 * speed; // px
-          const tx = p * 30 * speed;  // leve deslocamento lateral
-          const dr = p * 6 * Math.sign(speed); // rotação extra com o scroll
-          el.style.transform = 'translate3d(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px,0) rotate(' + (rot + dr).toFixed(2) + 'deg)';
-          el.style.filter = 'blur(' + blur + 'px)';
+          const ty = p * 140 * speed;
+          el.style.transform = 'translate3d(0,' + ty.toFixed(1) + 'px,0)';
         });
       }
     };
