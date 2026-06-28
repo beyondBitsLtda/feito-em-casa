@@ -529,6 +529,25 @@ class Component extends DCLogic {
           stage.style.opacity = opacity;
         }
       }
+
+      // -------- PARALLAX: caneca transparente na seção CONTATO --------
+      const parallaxEl = document.getElementById('fc-parallax-mug');
+      const contato = document.getElementById('contato');
+      if (parallaxEl && contato) {
+        const cr = contato.getBoundingClientRect();
+        const vh = window.innerHeight;
+        // Progresso: começa quando a seção entra na tela, termina quando sai pelo topo.
+        const start = vh;          // topo do contato ainda fora da tela (em baixo)
+        const end   = -cr.height;  // topo já saiu pelo topo da tela
+        const raw = (cr.top - end) / (start - end); // 1 -> 0
+        const p = Math.max(0, Math.min(1, raw));
+        // Movimenta o asset verticalmente (parallax suave) e dá leve rotação.
+        const translate = (p - 0.5) * 180; // -90px a +90px
+        const rotate = (p - 0.5) * -8;     // leve giro
+        parallaxEl.style.transform =
+          'translate3d(-50%, calc(-50% + ' + translate.toFixed(1) + 'px), 0) rotate(' + rotate.toFixed(2) + 'deg)';
+        parallaxEl.style.opacity = (0.18 + (1 - Math.abs(p - 0.5) * 2) * 0.22).toFixed(3);
+      }
     };
     window.addEventListener('scroll', this.onScroll, { passive: true });
     this.onScroll();
@@ -737,7 +756,19 @@ class Component extends DCLogic {
         tag: 'Garrafa',
         title: 'Garrafa esportiva',
         desc: 'Squeeze de corrida com bico anti-vazamento e a sua arte aplicada — leve, resistente e livre de BPA.',
-        image: (window.__resources && window.__resources.carousel3) || 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=800&q=80&auto=format&fit=crop',
+        image: (window.__resources && window.__resources.carousel3) || './assets/garrafa.jpg',
+      },
+      {
+        tag: 'Azulejo',
+        title: 'Azulejo decorativo',
+        desc: 'Sua arte vitrificada em cerâmica 15×15 cm. Perfeito para cozinhas, lembranças e quadros personalizados.',
+        image: (window.__resources && window.__resources.carousel4) || 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80&auto=format&fit=crop',
+      },
+      {
+        tag: 'Ecobag',
+        title: 'Ecobag de algodão',
+        desc: 'Sacola de algodão cru com sua estampa — durável, sustentável e linda de carregar por aí.',
+        image: (window.__resources && window.__resources.carousel5) || './assets/ecobag.jpg',
       },
     ];
   }
@@ -798,23 +829,27 @@ class Component extends DCLogic {
     const total = carouselSrc.length;
     const active = this.state.carouselIndex;
     const isMobile = (typeof window !== 'undefined') && window.innerWidth <= 720;
-    const spreadX = isMobile ? 150 : 260;
-    const tzStep  = isMobile ? 110 : 160;
-    const rotStep = isMobile ? 26  : 34;
+    // No mobile o coverflow é VERTICAL: empilha os cards no eixo Y e gira em rotateX.
+    const spreadMain = isMobile ? 230 : 260;
+    const tzStep     = isMobile ? 90  : 160;
+    const rotStep    = isMobile ? 18  : 34;
     const carouselItems = carouselSrc.map((item, i) => {
       let rel = i - active;
       if (rel > total / 2) rel -= total;
       if (rel < -total / 2) rel += total;
       const abs = Math.abs(rel);
-      const x = rel * spreadX;
-      const rotY = -rel * rotStep;
+      const main = rel * spreadMain;
+      const rot = -rel * rotStep;
       const tz = -abs * tzStep;
-      const scale = abs === 0 ? 1 : (abs === 1 ? 0.88 : 0.75);
-      const opacity = abs <= 2 ? (abs === 0 ? 1 : (abs === 1 ? 0.88 : 0.45)) : 0;
+      const scale = abs === 0 ? 1 : (abs === 1 ? 0.88 : 0.72);
+      const opacity = abs <= 2 ? (abs === 0 ? 1 : (abs === 1 ? 0.85 : 0.35)) : 0;
       const z = 100 - abs;
+      const transform = isMobile
+        ? `translateY(${main}px) translateZ(${tz}px) rotateX(${-rot}deg) scale(${scale})`
+        : `translateX(${main}px) translateZ(${tz}px) rotateY(${rot}deg) scale(${scale})`;
       return {
         ...item,
-        transform: `translateX(${x}px) translateZ(${tz}px) rotateY(${rotY}deg) scale(${scale})`,
+        transform,
         opacity,
         z,
         pointerEvents: abs <= 2 ? 'auto' : 'none',

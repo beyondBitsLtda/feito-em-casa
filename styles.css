@@ -34,8 +34,12 @@
       .fc-panel-left .fc-panel-text, .fc-panel-right .fc-panel-text { margin: 0 auto !important; }
       .fc-progress { display: none !important; }
       .fc-nav-links { gap: 18px !important; font-size: 11px !important; }
-      .fc-carousel { min-height: 480px !important; perspective: 1100px !important; }
+      /* Coverflow VERTICAL no mobile: empilha os cards de cima a baixo */
+      .fc-carousel { min-height: 760px !important; perspective: 1400px !important; perspective-origin: 50% 50% !important; }
       .fc-carousel-track { transform: none !important; }
-      .fc-card3d { width: 240px !important; height: 320px !important; margin-left: -120px !important; margin-top: -160px !important; }
+      .fc-card3d { width: 86vw !important; max-width: 340px !important; height: 440px !important; margin-left: -43vw !important; margin-top: -220px !important; transform-origin: 50% 50% !important; }
+      .fc-card3d > div > div:first-child { height: 280px !important; }
       .fc-interactive3d { height: 380px !important; }
+      /* Parallax mug menor no mobile */
+      #fc-parallax-mug { width: 110vw !important; opacity: 0.18 !important; }
     }

@@ -15,10 +15,10 @@
   <meta name="ext-resource-dependency" content="./assets/logo.png" data-resource-id="logoImg">
   <meta name="ext-resource-dependency" content="./assets/caneca.png" data-resource-id="carousel1">
   <meta name="ext-resource-dependency" content="./assets/camisa.jpg" data-resource-id="carousel2">
-  <meta name="ext-resource-dependency" content="https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=800&q=80&auto=format&fit=crop" data-resource-id="carousel3">
-  <meta name="ext-resource-dependency" content="https://images.unsplash.com/photo-1592078615290-033ee584e267?w=800&q=80&auto=format&fit=crop" data-resource-id="carousel4">
-  <meta name="ext-resource-dependency" content="https://images.unsplash.com/photo-1521369909029-2afed882baee?w=800&q=80&auto=format&fit=crop" data-resource-id="carousel5">
-  <meta name="ext-resource-dependency" content="https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=800&q=80&auto=format&fit=crop" data-resource-id="carousel6">
+  <meta name="ext-resource-dependency" content="./assets/garrafa.jpg" data-resource-id="carousel3">
+  <meta name="ext-resource-dependency" content="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80&auto=format&fit=crop" data-resource-id="carousel4">
+  <meta name="ext-resource-dependency" content="./assets/ecobag.jpg" data-resource-id="carousel5">
+  <meta name="ext-resource-dependency" content="./assets/asset-caneca-transparente.png" data-resource-id="parallaxMug">
   <template id="__bundler_thumbnail" data-bg-color="#F8FBFC">
     <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
       <rect width="1200" height="800" fill="#F8FBFC"/>
@@ -168,8 +168,11 @@
   </section>
 
   <!-- CONTATO -->
-  <section id="contato" class="fc-pad" style="position: relative; z-index: 3; padding: 140px 64px; background: linear-gradient(180deg, #FFFFFF 0%, #F4FAFC 100%);">
-    <div style="max-width: 860px; margin: 0 auto;">
+  <section id="contato" class="fc-pad" style="position: relative; z-index: 3; padding: 140px 64px; background: linear-gradient(180deg, #FFFFFF 0%, #F4FAFC 100%); overflow: hidden;">
+    <!-- Parallax: caneca transparente flutuando ao fundo da sessão -->
+    <img id="fc-parallax-mug" src="./assets/asset-caneca-transparente.png" alt="" aria-hidden="true"
+         style="position: absolute; top: 50%; left: 50%; width: min(720px, 95vw); max-width: none; transform: translate3d(-50%, -50%, 0); opacity: 0.22; pointer-events: none; z-index: 0; filter: drop-shadow(0 30px 60px rgba(0,0,255,0.18)); will-change: transform, opacity; user-select: none;"/>
+    <div style="max-width: 860px; margin: 0 auto; position: relative; z-index: 1;">
       <div class="fc-reveal" style="text-align: center; margin-bottom: 64px;">
         <div style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #0000FF; margin-bottom: 16px;">— Contato</div>
         <h2 class="fc-section-title" style="font-family: 'Fraunces', serif; font-weight: 300; font-size: 52px; letter-spacing: -0.02em; line-height: 1.1; margin: 0 0 20px;">Fale conosco.</h2>
